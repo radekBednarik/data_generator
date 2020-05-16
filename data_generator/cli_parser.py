@@ -27,7 +27,10 @@ def parse_inputs() -> Any:
         action="extend",
         nargs="+",
         type=str,
-        help="Pairs of column_name=data_type to create. E.g.: column1=str column2=int column3=float. Currently only str, float, int are supported.",
+        help="Specify columns, their datatype and max size.\nExamples: \
+            String: column1:str:50\n \
+            Float:  column2:float:-100:100\n \
+            Int:    column3:int:-100:100",
     )
     data_parser.add_argument(
         "-f",
