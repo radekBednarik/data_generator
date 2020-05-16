@@ -19,7 +19,7 @@ def parse_inputs() -> Any:
         help="Use some of these commands with -h or --help do display help."
     )
     data_parser: Any = subparsers.add_parser(
-        "data", help="Specify data you want have generated."
+        "data", help="Specify data you want to have generated."
     )
     # DATA
     data_parser.add_argument(
