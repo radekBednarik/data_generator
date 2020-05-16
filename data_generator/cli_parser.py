@@ -1,5 +1,6 @@
 import argparse
-from typing import Any
+import re
+from typing import Any, Optional
 
 
 def parse_inputs() -> Any:
@@ -40,5 +41,34 @@ def parse_inputs() -> Any:
         default="output",
         help="Folder, where generated data are stored. If not provided, defaults to './output'",
     )
-
     return main_parser.parse_args()
+
+
+def verify(inputs: Any) -> Optional[int]:
+    """Verifies parsed CLI input strings.
+
+    Arguments:
+        inputs {Any} -- parsed CLI input via func parse_inputs()
+
+    Raises:
+        RuntimeError: if some argument does not pass verification, this exception is raised
+
+    Returns:
+        Optional[int] -- None: OK, 1: NOK, if RuntimeError is raised and caught
+    """
+    regex: Any = re.compile(
+        r"(^[a-zA-z0-9]+:str:\d+$)|(^[a-zA-z0-9]+:(int|float):-?\d+:\d+$)"
+    )
+
+    try:
+        if inputs.specify is not None:
+            for input_ in inputs.specify:
+                if regex.search(input_) is None:
+                    raise RuntimeError(
+                        f"Provided argument '{input_}' has wrong format.\r\nPlease check documentation and try again."
+                    )
+    except RuntimeError as e:
+        print(str(e))
+        return 1
+
+    return None
