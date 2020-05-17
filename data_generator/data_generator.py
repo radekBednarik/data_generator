@@ -1,7 +1,10 @@
 # DEBUG
+from pprint import PrettyPrinter
 from typing import Any, Optional, Dict
 
 from cli_parser import parse_inputs, verify, convert_args
+
+printer: Any = PrettyPrinter(indent=2, sort_dicts=False)
 
 if __name__ == "__main__":
     args: Any = parse_inputs()
@@ -14,4 +17,4 @@ if __name__ == "__main__":
     result: Optional[int] = verify(args)
     print(result)
 
-    print(convert_args(vars(args)))
+    printer.pprint(convert_args(vars(args)))

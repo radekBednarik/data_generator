@@ -1,6 +1,12 @@
 import argparse
 import re
-from typing import Any, Dict, Optional, List, Union, Type
+from typing import Any, Dict, List, Optional, Type, Union
+
+# TYPES:
+c_args = Dict[
+    str, List[Union[Dict[str, Union[Type[str], Type[int], Type[float], int, str],]]]
+]
+a_args = Dict[str, Union[Type[str], Type[int], Type[float], int, str]]
 
 
 def parse_inputs() -> Any:
@@ -85,46 +91,60 @@ def verify(inputs: Any) -> Optional[int]:
     return None
 
 
-def convert_args(args: Dict[str, str]) -> Any:
+def convert_args(args: Dict[str, str]) -> c_args:
+    """Does conversion of parsed CLI args, which are all {str} into suitable 
+    format and datatypes.
+
+    Arguments:
+        args {Dict[str, str]} -- [description]
+
+    Returns:
+        c_args -- Dict[
+        str, List[Union[Dict[str, Union[Type[str], Type[int], Type[float], int, str],]]]
+        ]
+    """
+
+    def assign(chunks: List[str], type_=None) -> a_args:
+        """Transforms and assigns values of data args. Returns dict.
+
+        Arguments:
+            chunks {List[str]} -- list of chunks of string splitted by given parameter
+
+        Keyword Arguments:
+            type_ {[type]} -- type to add as value (default: {None})
+
+        Returns:
+            a_args -- Dict[str, Union[Type[str], Type[int], Type[float], int, str]]
+        """
+        return dict(
+            data_type=type_,
+            column_name=chunks[0],
+            lower_bound=int(chunks[2]),
+            upper_bound=int(chunks[3]),
+        )
+
     output: dict = {}
 
     for key, value in iter(args.items()):
-        # if key not in output dict, add it
         if key not in list(output.keys()):
-            output[key] = []
+            output[key] = None
 
         if key == "specify":
+            output[key] = []
             for v in value:
                 chunks: List[str] = v.split(sep=":")
-                temp_dict: Dict[
-                    str, Union[Type[str], Type[int], Type[float], int, str]
-                ] = {}
 
                 if chunks[1] == "str":
-                    temp_dict = dict(
-                        data_type=str,
-                        column_name=chunks[0],
-                        lower_bound=int(chunks[2]),
-                        upper_bound=int(chunks[3]),
-                    )
-                    output[key].append(temp_dict)
-
+                    output[key].append(assign(chunks, type_=str))
                 elif chunks[1] == "int":
-                    temp_dict = dict(
-                        data_type=int,
-                        column_name=chunks[0],
-                        lower_bound=int(chunks[2]),
-                        upper_bound=int(chunks[3]),
-                    )
-                    output[key].append(temp_dict)
-
+                    output[key].append(assign(chunks, type_=int))
                 elif chunks[1] == "float":
-                    temp_dict = dict(
-                        data_type=float,
-                        column_name=chunks[0],
-                        lower_bound=int(chunks[2]),
-                        upper_bound=int(chunks[3]),
-                    )
-                    output[key].append(temp_dict)
+                    output[key].append(assign(chunks, type_=float))
+
+        elif key == "rows":
+            output[key] = int(value)
+
+        elif key == "folder":
+            output[key] = value
 
     return output
