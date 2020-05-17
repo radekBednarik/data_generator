@@ -34,6 +34,12 @@ def parse_inputs() -> Any:
             Int:    column3:int:-100:100",
     )
     data_parser.add_argument(
+        "rows",
+        action="store",
+        type=int,
+        help="Specify number of rows to be generated, header is excluded.",
+    )
+    data_parser.add_argument(
         "-f",
         "--folder",
         action="store",
@@ -57,7 +63,7 @@ def verify(inputs: Any) -> Optional[int]:
         Optional[int] -- None: OK, 1: NOK, if RuntimeError is raised and caught
     """
     regex: Any = re.compile(
-        r"(^[a-zA-Z0-9]+:str:\d+$)|(^[a-zA-Z0-9]+:(int|float):-?\d+:\d+$)"
+        r"(^[a-zA-Z0-9_]+:str:\d+$)|(^[a-zA-Z0-9_]+:(int|float):-?\d+:\d+$)"
     )
 
     try:
@@ -67,6 +73,11 @@ def verify(inputs: Any) -> Optional[int]:
                     raise RuntimeError(
                         f"Provided argument '{input_}' has wrong format.\r\nPlease check documentation and try again."
                     )
+
+        if inputs.rows <= 0:
+            raise RuntimeError(
+                f"You can not generate '{str(inputs.rows)}' rows. Minimum number is 1."
+            )
     except RuntimeError as e:
         print(str(e))
         return 1

@@ -8,6 +8,7 @@ if __name__ == "__main__":
 
     print(vars(args))
     print(args.specify)
+    print(args.rows)
     print(args.folder)
 
     result: Optional[int] = verify(args)
