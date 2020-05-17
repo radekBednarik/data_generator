@@ -57,7 +57,7 @@ def verify(inputs: Any) -> Optional[int]:
         Optional[int] -- None: OK, 1: NOK, if RuntimeError is raised and caught
     """
     regex: Any = re.compile(
-        r"(^[a-zA-z0-9]+:str:\d+$)|(^[a-zA-z0-9]+:(int|float):-?\d+:\d+$)"
+        r"(^[a-zA-Z0-9]+:str:\d+$)|(^[a-zA-Z0-9]+:(int|float):-?\d+:\d+$)"
     )
 
     try:
