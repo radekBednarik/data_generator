@@ -1,6 +1,6 @@
 import argparse
 import re
-from typing import Any, Optional
+from typing import Any, Dict, Optional, List, Union, Type
 
 
 def parse_inputs() -> Any:
@@ -29,7 +29,7 @@ def parse_inputs() -> Any:
         nargs="+",
         type=str,
         help="Specify columns, their datatype and max size.\nExamples: \
-            String: column1:str:50\n \
+            String: column1:str:0:50\n \
             Float:  column2:float:-100:100\n \
             Int:    column3:int:-100:100",
     )
@@ -63,7 +63,7 @@ def verify(inputs: Any) -> Optional[int]:
         Optional[int] -- None: OK, 1: NOK, if RuntimeError is raised and caught
     """
     regex: Any = re.compile(
-        r"(^[a-zA-Z0-9_]+:str:\d+$)|(^[a-zA-Z0-9_]+:(int|float):-?\d+:\d+$)"
+        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int|float):-?\d+:\d+$)"
     )
 
     try:
@@ -83,3 +83,48 @@ def verify(inputs: Any) -> Optional[int]:
         return 1
 
     return None
+
+
+def convert_args(args: Dict[str, str]) -> Any:
+    output: dict = {}
+
+    for key, value in iter(args.items()):
+        # if key not in output dict, add it
+        if key not in list(output.keys()):
+            output[key] = []
+
+        if key == "specify":
+            for v in value:
+                chunks: List[str] = v.split(sep=":")
+                temp_dict: Dict[
+                    str, Union[Type[str], Type[int], Type[float], int, str]
+                ] = {}
+
+                if chunks[1] == "str":
+                    temp_dict = dict(
+                        data_type=str,
+                        column_name=chunks[0],
+                        lower_bound=int(chunks[2]),
+                        upper_bound=int(chunks[3]),
+                    )
+                    output[key].append(temp_dict)
+
+                elif chunks[1] == "int":
+                    temp_dict = dict(
+                        data_type=int,
+                        column_name=chunks[0],
+                        lower_bound=int(chunks[2]),
+                        upper_bound=int(chunks[3]),
+                    )
+                    output[key].append(temp_dict)
+
+                elif chunks[1] == "float":
+                    temp_dict = dict(
+                        data_type=float,
+                        column_name=chunks[0],
+                        lower_bound=int(chunks[2]),
+                        upper_bound=int(chunks[3]),
+                    )
+                    output[key].append(temp_dict)
+
+    return output
