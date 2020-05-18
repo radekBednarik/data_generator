@@ -1,4 +1,3 @@
-from multiprocessing import get_context
 from random import choice, randrange, uniform
 from string import ascii_letters, digits
 
@@ -105,28 +104,33 @@ def generate_column_data(assigned_args, rows_count):
     aa = assigned_args
 
     if aa["data_type"] is str:
-        return [
+        return (
             generate_string(aa["lower_bound"], aa["upper_bound"])
             for _ in range(rows_count)
-        ]
+        )
 
     if aa["data_type"] is int:
-        return [
+        return (
             generate_int(aa["lower_bound"], aa["upper_bound"])
             for _ in range(rows_count)
-        ]
+        )
 
     if aa["data_type"] is float:
-        return [
+        return (
             generate_float(aa["lower_bound"], aa["upper_bound"])
             for _ in range(rows_count)
-        ]
+        )
 
     return None
 
 
-def pool_generate_columns(column_data_generator, args):
-    with get_context("spawn").Pool(maxtasksperchild=1) as p:
-        result = p.starmap(column_data_generator, args)
+def generate_data(converted_args):
+    output = {}
 
-    return result
+    for data in converted_args["specify"]:
+        if data["column_name"] not in list(output.keys()):
+            output[data["column_name"]] = None
+
+        output[data["column_name"]] = generate_column_data(data, converted_args["rows"])
+
+    return output
