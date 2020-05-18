@@ -1,9 +1,21 @@
+from random import choice, randrange, uniform
 from string import ascii_letters, digits
 from typing import Union
-from random import randrange, choice, uniform
 
 
-def _check_bounds(lower_bound: int, upper_bound: int) -> None:
+def _check_bounds(
+    lower_bound: Union[int, float], upper_bound: Union[int, float]
+) -> None:
+    """Checks, whether lower bound of the interval has not bigger value than upper bound.
+    Raises ValueError, if it is so.
+
+    Arguments:
+        lower_bound {Union[int, float]} -- provided value of lower bound
+        upper_bound {Union[int, float]} -- provided value of upper bound
+
+    Raises:
+        ValueError: -- prints f"Lower bound'{str(lower_bound)}' cannot be bigger then the upper bound '{str(upper_bound)}'."
+    """
     if lower_bound > upper_bound:
         raise ValueError(
             f"Lower bound'{str(lower_bound)}' cannot be bigger then the upper bound '{str(upper_bound)}'."
@@ -63,6 +75,25 @@ def generate_int(lower_bound: int, upper_bound: int) -> int:
 
 
 def generate_float(lower_bound: float, upper_bound: float) -> float:
+    """Generates random float from given interval.
+
+    Given the rounding, the interval is (not) right-side inclusive, i.e.
+    <lower_bound, upper_bound> or <lower_bound, upper_bound). Check documentation
+    in See section.
+
+    Arguments:
+        lower_bound {float} -- lowest possible value of generated float
+        upper_bound {float} -- highest possible value of generated float, may be not included
+    
+    Raises:
+        ValueError: if lower_bound > upper_bound
+
+    Returns:
+        float -- generated float, 1: if ValueError raised
+
+    See:
+        https://docs.python.org/3/library/random.html#random.uniform
+    """
     try:
         _check_bounds(lower_bound, upper_bound)
         return uniform(lower_bound, upper_bound)

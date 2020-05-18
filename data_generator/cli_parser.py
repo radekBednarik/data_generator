@@ -4,9 +4,9 @@ from typing import Any, Dict, List, Optional, Type, Union
 
 # TYPES:
 c_args = Dict[
-    str, List[Union[Dict[str, Union[Type[str], Type[int], Type[float], int, str],]]]
+    str, List[Union[Dict[str, Union[Type[str], Type[int], Type[float], float, str],]]]
 ]
-a_args = Dict[str, Union[Type[str], Type[int], Type[float], int, str]]
+a_args = Dict[str, Union[Type[str], Type[int], Type[float], float, str]]
 
 
 def parse_inputs() -> Any:
@@ -69,7 +69,7 @@ def verify(inputs: Any) -> Optional[int]:
         Optional[int] -- None: OK, 1: NOK, if RuntimeError is raised and caught
     """
     regex: Any = re.compile(
-        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int|float):-?\d+\.\d*:\d+\.\d*$)"
+        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int):-?\d+:\d+$)|(^[a-zA-Z0-9_]+:(float):-?\d+\.\d*:\d+\.\d*$)"
     )
 
     try:
@@ -100,7 +100,7 @@ def convert_args(args: Dict[str, str]) -> c_args:
 
     Returns:
         c_args -- Dict[
-        str, List[Union[Dict[str, Union[Type[str], Type[int], Type[float], int, str],]]]
+        str, List[Union[Dict[str, Union[Type[str], Type[int], Type[float], float, str],]]]
         ]
     """
 
@@ -114,13 +114,13 @@ def convert_args(args: Dict[str, str]) -> c_args:
             type_ {[type]} -- type to add as value (default: {None})
 
         Returns:
-            a_args -- Dict[str, Union[Type[str], Type[int], Type[float], int, str]]
+            a_args -- Dict[str, Union[Type[str], Type[int], Type[float], float, str]]
         """
         return dict(
             data_type=type_,
             column_name=chunks[0],
-            lower_bound=int(chunks[2] if type_ == int else float(chunks[2])),
-            upper_bound=int(chunks[3] if type_ == int else float(chunks[3])),
+            lower_bound=float(chunks[2]),
+            upper_bound=float(chunks[3]),
         )
 
     output: dict = {}
