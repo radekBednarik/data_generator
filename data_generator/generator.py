@@ -9,14 +9,14 @@ def generate_string(lower_bound: int, upper_bound: int) -> Union[str, int]:
     then upper bound is done.
 
     Arguments:
-        specs {Dict[str, Union[Type[str], str, int]]} -- specifications for string generation provided by func
-        cli_parser.convert_args()
+        lower_bound {int} -- minimum lenght of generated string
+        upper_bound {int} -- maximum lenght of generated string
 
     Raises:
         ValueError: if lower bound is bigger than upper bound
 
     Returns:
-        Union[str, int] -- generated str, 1, if error
+        Union[str, int] -- generated str;  1: if ValueError
     
     See:
         https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
@@ -28,8 +28,8 @@ def generate_string(lower_bound: int, upper_bound: int) -> Union[str, int]:
             raise ValueError(
                 f"Lower bound of string '{str(lower_bound)}' cannot be bigger then upper bound '{str(upper_bound)}'."
             )
-        str_lenght: int = randrange(lower_bound, upper_bound + 1)
 
+        str_lenght: int = randrange(lower_bound, upper_bound + 1)
         return "".join(choice(base) for _ in range(str_lenght))
 
     except ValueError as e:
