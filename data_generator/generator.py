@@ -1,6 +1,6 @@
 from string import ascii_letters, digits
 from typing import Union
-from random import randrange, choice
+from random import randrange, choice, uniform
 
 
 def _check_bounds(lower_bound: int, upper_bound: int) -> None:
@@ -56,6 +56,16 @@ def generate_int(lower_bound: int, upper_bound: int) -> int:
     try:
         _check_bounds(lower_bound, upper_bound)
         return randrange(lower_bound, upper_bound + 1)
+
+    except ValueError as e:
+        print(str(e))
+        return 1
+
+
+def generate_float(lower_bound: float, upper_bound: float) -> float:
+    try:
+        _check_bounds(lower_bound, upper_bound)
+        return uniform(lower_bound, upper_bound)
 
     except ValueError as e:
         print(str(e))

@@ -69,7 +69,7 @@ def verify(inputs: Any) -> Optional[int]:
         Optional[int] -- None: OK, 1: NOK, if RuntimeError is raised and caught
     """
     regex: Any = re.compile(
-        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int|float):-?\d+:\d+$)"
+        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int|float):-?\d+\.\d*:\d+\.\d*$)"
     )
 
     try:
@@ -119,8 +119,8 @@ def convert_args(args: Dict[str, str]) -> c_args:
         return dict(
             data_type=type_,
             column_name=chunks[0],
-            lower_bound=int(chunks[2]),
-            upper_bound=int(chunks[3]),
+            lower_bound=int(chunks[2] if type_ == int else float(chunks[2])),
+            upper_bound=int(chunks[3] if type_ == int else float(chunks[3])),
         )
 
     output: dict = {}
