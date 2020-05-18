@@ -1,6 +1,6 @@
 from random import choice, randrange, uniform
 from string import ascii_letters, digits
-from typing import Union
+from typing import Union, Generator, Type
 
 
 def _check_bounds(
@@ -101,3 +101,21 @@ def generate_float(lower_bound: float, upper_bound: float) -> float:
     except ValueError as e:
         print(str(e))
         return 1
+
+
+def generate_column_data(
+    rows_count: int,
+    data_type: Union[Type[str], Type[float], Type[int]],
+    lower_bound: Union[int, float],
+    upper_bound: Union[int, float],
+) -> Union[Generator, None]:
+    if isinstance(data_type, str):
+        return (generate_string(lower_bound, upper_bound) for _ in range(rows_count))
+
+    if isinstance(data_type, int):
+        return (generate_int(lower_bound, upper_bound) for _ in range(rows_count))
+
+    if isinstance(data_type, float):
+        return (generate_float(lower_bound, upper_bound) for _ in range(rows_count))
+
+    return None
