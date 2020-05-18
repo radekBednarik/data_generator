@@ -1,6 +1,9 @@
+from multiprocessing import get_context
 from random import choice, randrange, uniform
 from string import ascii_letters, digits
-from typing import Union, Generator, Type
+from typing import Union, Generator, Callable, List, Any, Tuple
+
+from cli_parser import a_args
 
 
 def _check_bounds(
@@ -103,19 +106,34 @@ def generate_float(lower_bound: float, upper_bound: float) -> float:
         return 1
 
 
-def generate_column_data(
-    rows_count: int,
-    data_type: Union[Type[str], Type[float], Type[int]],
-    lower_bound: Union[int, float],
-    upper_bound: Union[int, float],
-) -> Union[Generator, None]:
-    if isinstance(data_type, str):
-        return (generate_string(lower_bound, upper_bound) for _ in range(rows_count))
+def generate_column_data(assigned_args: a_args, rows_count: int) -> Union[List, None]:
+    aa: a_args = assigned_args
 
-    if isinstance(data_type, int):
-        return (generate_int(lower_bound, upper_bound) for _ in range(rows_count))
+    if aa["data_type"] is str:
+        return [
+            generate_string(aa["lower_bound"], aa["upper_bound"])
+            for _ in range(rows_count)
+        ]
 
-    if isinstance(data_type, float):
-        return (generate_float(lower_bound, upper_bound) for _ in range(rows_count))
+    if aa["data_type"] is int:
+        return [
+            generate_int(aa["lower_bound"], aa["upper_bound"])
+            for _ in range(rows_count)
+        ]
+
+    if aa["data_type"] is float:
+        return [
+            generate_float(aa["lower_bound"], aa["upper_bound"])
+            for _ in range(rows_count)
+        ]
 
     return None
+
+
+def pool_generate_columns(
+    column_data_generator: Callable, args: List[Tuple[Any]]
+) -> List[Union[List, None]]:
+    with get_context("spawn").Pool(maxtasksperchild=1) as p:
+        result: List[Union[List, None]] = p.starmap(column_data_generator, args)
+
+    return result

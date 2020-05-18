@@ -124,9 +124,9 @@ def convert_args(args: Any) -> c_args:
         )
 
     output: dict = {}
-    args: Dict[str, str] = vars(args)
+    args_: Dict[str, str] = vars(args)
 
-    for key, value in iter(args.items()):
+    for key, value in iter(args_.items()):
         if key not in list(output.keys()):
             output[key] = None
 
