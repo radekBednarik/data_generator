@@ -91,12 +91,12 @@ def verify(inputs: Any) -> Optional[int]:
     return None
 
 
-def convert_args(args: Dict[str, str]) -> c_args:
+def convert_args(args: Any) -> c_args:
     """Does conversion of parsed CLI args, which are all {str} into suitable 
     format and datatypes.
 
     Arguments:
-        args {Dict[str, str]} -- [description]
+        args {Any} -- parsed CLI arguments as argparse.Namespace
 
     Returns:
         c_args -- Dict[
@@ -124,6 +124,7 @@ def convert_args(args: Dict[str, str]) -> c_args:
         )
 
     output: dict = {}
+    args: Dict[str, str] = vars(args)
 
     for key, value in iter(args.items()):
         if key not in list(output.keys()):
