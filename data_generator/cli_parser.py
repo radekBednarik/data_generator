@@ -1,15 +1,8 @@
 import argparse
 import re
-from typing import Any, Dict, List, Optional, Type, Union
-
-# TYPES:
-c_args = Dict[
-    str, List[Union[Dict[str, Union[Type[str], Type[int], Type[float], float, str],]]]
-]
-a_args = Dict[str, Union[Type[str], Type[int], Type[float], float, str]]
 
 
-def parse_inputs() -> Any:
+def parse_inputs():
     """Processes CLI input and returns argparse Namespace with entered arguments' values.
 
     Returns:
@@ -19,13 +12,13 @@ def parse_inputs() -> Any:
         https://docs.python.org/3/library/argparse.html#argparse.Namespace
     """
     # create parsers
-    main_parser: Any = argparse.ArgumentParser(
+    main_parser = argparse.ArgumentParser(
         description="Use -h or --help to display available commands."
     )
-    subparsers: Any = main_parser.add_subparsers(
+    subparsers = main_parser.add_subparsers(
         help="Use some of these commands with -h or --help do display help."
     )
-    data_parser: Any = subparsers.add_parser(
+    data_parser = subparsers.add_parser(
         "data", help="Specify data you want to have generated."
     )
     # DATA
@@ -56,19 +49,19 @@ def parse_inputs() -> Any:
     return main_parser.parse_args()
 
 
-def verify(inputs: Any) -> Optional[int]:
+def verify(inputs):
     """Verifies parsed CLI input strings.
 
     Arguments:
-        inputs {Any} -- parsed CLI input via func parse_inputs()
+        inputs -- parsed CLI input via func parse_inputs()
 
     Raises:
         RuntimeError: if some argument does not pass verification, this exception is raised
 
     Returns:
-        Optional[int] -- None: OK, 1: NOK, if RuntimeError is raised and caught
+        None: OK, 1: NOK, if RuntimeError is raised and caught
     """
-    regex: Any = re.compile(
+    regex = re.compile(
         r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int):-?\d+:\d+$)|(^[a-zA-Z0-9_]+:(float):-?\d+\.\d*:\d+\.\d*$)"
     )
 
@@ -91,30 +84,28 @@ def verify(inputs: Any) -> Optional[int]:
     return None
 
 
-def convert_args(args: Any) -> c_args:
+def convert_args(args):
     """Does conversion of parsed CLI args, which are all {str} into suitable 
     format and datatypes.
 
     Arguments:
-        args {Any} -- parsed CLI arguments as argparse.Namespace
+        args -- parsed CLI arguments as argparse.Namespace
 
     Returns:
-        c_args -- Dict[
-        str, List[Union[Dict[str, Union[Type[str], Type[int], Type[float], float, str],]]]
-        ]
+        converted cli arguments as dictionary
     """
 
-    def assign(chunks: List[str], type_=None) -> a_args:
+    def assign(chunks, type_=None):
         """Transforms and assigns values of data args. Returns dict.
 
         Arguments:
-            chunks {List[str]} -- list of chunks of string splitted by given parameter
+            chunks -- list of chunks of string splitted by given parameter
 
         Keyword Arguments:
-            type_ {[type]} -- type to add as value (default: {None})
+            type_ -- type to add as value (default: {None})
 
         Returns:
-            a_args -- Dict[str, Union[Type[str], Type[int], Type[float], float, str]]
+            dict with assigned values and converted values
         """
         return dict(
             data_type=type_,
@@ -123,8 +114,8 @@ def convert_args(args: Any) -> c_args:
             upper_bound=float(chunks[3]),
         )
 
-    output: dict = {}
-    args_: Dict[str, str] = vars(args)
+    output = {}
+    args_ = vars(args)
 
     for key, value in iter(args_.items()):
         if key not in list(output.keys()):
@@ -133,7 +124,7 @@ def convert_args(args: Any) -> c_args:
         if key == "specify":
             output[key] = []
             for v in value:
-                chunks: List[str] = v.split(sep=":")
+                chunks = v.split(sep=":")
 
                 if chunks[1] == "str":
                     output[key].append(assign(chunks, type_=str))
