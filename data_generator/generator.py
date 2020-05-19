@@ -121,7 +121,7 @@ def generate_column_data(assigned_args, rows_count):
             for _ in range(rows_count)
         )
 
-    return None
+    return 1
 
 
 def generate_data(converted_args):

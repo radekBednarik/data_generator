@@ -2,6 +2,7 @@ import csv
 from datetime import datetime as dt
 from os.path import join, isdir
 from os import makedirs
+from tqdm import tqdm
 
 
 def _check_dir(dirpath):
@@ -22,5 +23,12 @@ def to_csv(data, rows_count, output_folder):
         writer = csv.DictWriter(f, fieldnames=headers)
         writer.writeheader()
 
-        for _ in range(rows_count):
-            print(next(list(data.values())[0]))
+        for _ in tqdm(range(rows_count)):
+            row = {}
+
+            for header, data_generator in list(data.items()):
+                # key will never be there, dict is empty for each cycle
+                if header not in row:
+                    row[header] = next(data_generator)
+
+            writer.writerow(row)
