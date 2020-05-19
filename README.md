@@ -60,7 +60,7 @@ Basic check is done after CLI command is entered, whether argument values for da
 
 - python3 -m data_generator data column1:str:0:50 column2:str:101:101 column3:int:10:10 column4:int:0:1000 column5:float:0.0:1000.0 1000
 
-  - this will generate .csv file with 1000 rows of five columns with random data. First columns is of datatype str, it is str with variable length between 0 - 50 chars. Second column is str with fixed lenght of 101 chars. Third columns is int of fixed size of 10. Fourth column is int of variable size between 0 - 1000. Fifth column is float of variable size between 0.0 - 1000.0.
+  - this will generate .csv file with 1000 rows of five columns with random data. First columns is of datatype str, it is str with variable length between 0 - 50 chars. Second column is str with fixed lenght of 101 chars. Third columns is int of the SAME VALUE of 10. Fourth column is int of variable size between 0 - 1000. Fifth column is float of variable size between 0.0 - 1000.0.
 
   - 1000 - indicates how many rows will be generated
 
