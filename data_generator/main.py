@@ -3,6 +3,7 @@ from pprint import PrettyPrinter
 
 from cli_parser import convert_args, parse_inputs, verify
 from generator import generate_data
+from output import to_csv
 
 printer = PrettyPrinter(indent=2, sort_dicts=False)
 
@@ -20,5 +21,4 @@ if __name__ == "__main__":
 
         print(result)
 
-        for a in result["column3"]:
-            print(a)
+        to_csv(result, converted_args["rows"], converted_args["folder"])
