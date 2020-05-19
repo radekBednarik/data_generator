@@ -1,13 +1,14 @@
 # DEBUG
 from pprint import PrettyPrinter
 
-from cli_parser import convert_args, parse_inputs, verify
-from generator import generate_data
-from output import to_csv
+from .cli_parser import convert_args, parse_inputs, verify
+from .generator import generate_data
+from .output import to_csv
 
 printer = PrettyPrinter(indent=2, sort_dicts=False)
 
-if __name__ == "__main__":
+
+def main():
     args = parse_inputs()
 
     if verify(args) is None:
@@ -15,10 +16,12 @@ if __name__ == "__main__":
         # DEBUG
         printer.pprint(converted_args)
 
-        inputs = [(data, converted_args["rows"]) for data in converted_args["specify"]]
-
         result = generate_data(converted_args)
 
         print(result)
 
         to_csv(result, converted_args["rows"], converted_args["folder"])
+
+
+if __name__ == "__main__":
+    main()
