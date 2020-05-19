@@ -1,16 +1,29 @@
 import csv
 from datetime import datetime as dt
-from os.path import join, isdir
 from os import makedirs
+from os.path import isdir, join
+
 from tqdm import tqdm
 
 
 def _check_dir(dirpath):
+    """Checks for <dirpath> existence and creates it recursively, if not found.
+
+    Arguments:
+        dirpath -- path to directory
+    """
     if not isdir(dirpath):
         makedirs(dirpath, exist_ok=True)
 
 
 def to_csv(data, rows_count, output_folder):
+    """Saves generated data into .csv file.
+
+    Arguments:
+        data -- converted CLI args as dict
+        rows_count -- number of rows generated excluding header
+        output_folder -- folder to save generated .csv file into
+    """
     headers = list(data.keys())
     timestamp = dt.now().strftime("%Y%m%d_%H%M%S")
     filename = f"data_{timestamp}.csv"

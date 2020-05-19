@@ -101,6 +101,15 @@ def generate_float(lower_bound, upper_bound):
 
 
 def generate_column_data(assigned_args, rows_count):
+    """Returns data generator for given arguments datatype.
+
+    Arguments:
+        assigned_args -- parsed cli input for given datatype, like int, str, or float
+        rows_count -- number of rows to be generated, excluding header
+
+    Returns:
+        generator object; 1: if NOK
+    """
     aa = assigned_args
 
     if aa["data_type"] is str:
@@ -125,6 +134,14 @@ def generate_column_data(assigned_args, rows_count):
 
 
 def generate_data(converted_args):
+    """Returns dict with all columns names as keys and data generators as values.
+
+    Arguments:
+        converted_args -- converted CLI args to dict
+
+    Returns:
+        dict with data generators for all columns
+    """
     output = {}
 
     for data in converted_args["specify"]:
