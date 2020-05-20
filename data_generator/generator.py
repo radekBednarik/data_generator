@@ -38,7 +38,7 @@ def _generator(
     """
     if (upper_bound is not None) and (lower_bound is not None):
         while True:
-            yield rand_val_creator(upper_bound, lower_bound)
+            yield rand_val_creator(lower_bound, upper_bound)
 
     if date_template is not None:
         while True:
@@ -130,7 +130,7 @@ def random_date(format_template):
     """Returns date str formatted as <format_template> specifies.
 
     Templating supports:
-        %Y, %m, %d, %H, %M, %S, %f
+        %Y, %m, %d, %H, %M, %S, %f, _, -
 
     Arguments:
         format_template {str} -- format template for date object
@@ -201,8 +201,6 @@ def assemble_data_generators(converted_args):
         dict with data generators for all columns
     """
     output = {}
-
-    print(converted_args)
 
     for data in converted_args["specify"]:
         if data["column_name"] not in list(output.keys()):

@@ -109,7 +109,7 @@ def convert_args(args):
         Returns:
             dict with assigned values and converted values, 1: Nothing was returned
         """
-        if (type_ is str) or (type_ is int) or (type is float):
+        if (type_ is str) or (type_ is int) or (type_ is float):
             return dict(
                 data_type=type_,
                 column_name=chunks[0],
