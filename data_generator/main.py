@@ -1,5 +1,5 @@
 from data_generator.cli_parser import convert_args, parse_inputs, verify
-from data_generator.generator import generate_data
+from data_generator.generator import assemble_data_generators
 from data_generator.output import to_csv
 
 
@@ -13,7 +13,7 @@ def main():
 
         print("--> Parsed CLI inputs converted to dictionary.\r\n")
 
-        result = generate_data(converted_args)
+        result = assemble_data_generators(converted_args)
 
         print("--> Data generators created.\r\n")
         print("--> Data generation and saving to .csv starting... \n")

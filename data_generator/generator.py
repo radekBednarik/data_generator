@@ -19,7 +19,22 @@ def _check_bounds(lower_bound, upper_bound):
         )
 
 
-def generate_string(lower_bound, upper_bound):
+def _generator(rand_val_creator, upper_bound, lower_bound):
+    """Returns generator for given <rand_val_creator> Callable.
+
+    Arguments:
+        rand_val_creator {Callable} -- func returning random data
+        upper_bound -- upper bound of the interval from which random data is created
+        lower_bound -- lower bound of the interval from which random data is created
+
+    Yields:
+        random value 
+    """
+    while True:
+        yield rand_val_creator(upper_bound, lower_bound)
+
+
+def random_string(lower_bound, upper_bound):
     """Generates random string from [A-Za-z0-9]. Lenght of the string
     is defined by CLI arguments provided by user. Basic check against lower bound being bigger 
     then upper bound is done.
@@ -49,7 +64,7 @@ def generate_string(lower_bound, upper_bound):
         return 1
 
 
-def generate_int(lower_bound, upper_bound):
+def random_int(lower_bound, upper_bound):
     """Generates random integer from inclusive interval <lower_bound, upper_bound>.
 
     Arguments:
@@ -71,7 +86,7 @@ def generate_int(lower_bound, upper_bound):
         return 1
 
 
-def generate_float(lower_bound, upper_bound):
+def random_float(lower_bound, upper_bound):
     """Generates random float from given interval.
 
     Given the rounding, the interval is (not) right-side inclusive, i.e.
@@ -100,12 +115,11 @@ def generate_float(lower_bound, upper_bound):
         return 1
 
 
-def generate_column_data(assigned_args, rows_count):
+def create_data_generator(assigned_args):
     """Returns data generator for given arguments datatype.
 
     Arguments:
         assigned_args -- parsed cli input for given datatype, like int, str, or float
-        rows_count -- number of rows to be generated, excluding header
 
     Returns:
         generator object; 1: if NOK
@@ -113,27 +127,18 @@ def generate_column_data(assigned_args, rows_count):
     aa = assigned_args
 
     if aa["data_type"] is str:
-        return (
-            generate_string(aa["lower_bound"], aa["upper_bound"])
-            for _ in range(rows_count)
-        )
+        return _generator(random_string, aa["lower_bound"], aa["upper_bound"])
 
     if aa["data_type"] is int:
-        return (
-            generate_int(aa["lower_bound"], aa["upper_bound"])
-            for _ in range(rows_count)
-        )
+        return _generator(random_int, aa["lower_bound"], aa["upper_bound"])
 
     if aa["data_type"] is float:
-        return (
-            generate_float(aa["lower_bound"], aa["upper_bound"])
-            for _ in range(rows_count)
-        )
+        return _generator(random_float, aa["lower_bound"], aa["upper_bound"])
 
     return 1
 
 
-def generate_data(converted_args):
+def assemble_data_generators(converted_args):
     """Returns dict with all columns names as keys and data generators as values.
 
     Arguments:
@@ -148,6 +153,6 @@ def generate_data(converted_args):
         if data["column_name"] not in list(output.keys()):
             output[data["column_name"]] = None
 
-        output[data["column_name"]] = generate_column_data(data, converted_args["rows"])
+        output[data["column_name"]] = create_data_generator(data)
 
     return output
