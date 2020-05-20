@@ -1,6 +1,6 @@
-from .cli_parser import convert_args, parse_inputs, verify
-from .generator import generate_data
-from .output import to_csv
+from data_generator.cli_parser import convert_args, parse_inputs, verify
+from data_generator.generator import generate_data
+from data_generator.output import to_csv
 
 
 def main():
