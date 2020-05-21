@@ -27,12 +27,11 @@ def to_csv(data, rows_count, output_folder):
     headers = list(data.keys())
     timestamp = dt.now().strftime("%Y%m%d_%H%M%S")
     filename = f"data_{timestamp}.csv"
+    filepath = join(output_folder, filename)
 
     _check_dir(output_folder)
 
-    with open(
-        join(output_folder, filename), mode="w", encoding="utf-8", newline=""
-    ) as f:
+    with open(filepath, mode="w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=headers)
         writer.writeheader()
 

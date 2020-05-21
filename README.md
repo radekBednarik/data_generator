@@ -10,7 +10,7 @@
 
 Random Data Generator.
 
-Create dataset with random data of datatypes int, float and str. Other datatypes, most importantly date will be added in the future.
+Create dataset with random data of datatypes int, float, str and date (more precisely python's datetime.datetime).
 
 Data are exported to .csv files.
 
@@ -35,7 +35,16 @@ What things you need to install the software and how to install them.
 ## Usage <a name = "usage"></a>
 
 - data parameters are provided via CLI commands
-- currently, these datatypes are supported: **int, str, float**
+- currently, these Python's datatypes are supported: **int, str, float, datetime.datetime**
+
+### OS differences
+
+- there should be no problems running this utility on standard linux distro or on Windows 10
+- only difference is:
+
+  - on linux, use _python3_ command
+
+  - on Windows 10, use _python_ command
 
 ### CLI syntax
 
@@ -51,6 +60,18 @@ What things you need to install the software and how to install them.
 - to specify str:
 
   - <column_name>:str:<lower_bound>:<upper_bound> - lower_bound cannot be negative.
+
+- to specify date:
+
+  - <column_name>:date:<format_template>
+
+    - under the hood, generator works with Python's native datetime module. That means, that all datetime format codes listed <a href = "https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">HERE</a> should be suppported.
+
+    - as of now, **\_ and -** are permitted as separators
+
+    - for example, format template can look like this: _%Y%m%d\_%H%M%S_. This will display generated random date in format "yyyymmdd_hhmmss".
+
+    - minimum year is 1, maximum year is 9999. See <a href = "https://docs.python.org/3/library/datetime.html#constants">documentation</a>.
 
 #### Formatting checks
 
@@ -79,3 +100,7 @@ Basic check is done after CLI command is entered, whether argument values for da
 - python3 -m data_generator data data_with_negative_int:int:-1000:1000 data_with_negative_float:float:-100000.0:0.0 10000
 
   - this will generate 10 rows of data with integer in the interval <-1000, 1000> and float in the inteval <-100000.0, 0.0>
+
+- python3 -m data*generator data random_dates_without_separators:date:%Y%m%d%H%M%S random_dates_with_separators:date:%Y-%m*%d*-*%H-%M\_%S 10
+
+  - geneates two columns of random dates with and without using the allowed separators

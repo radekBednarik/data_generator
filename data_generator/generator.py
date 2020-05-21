@@ -138,25 +138,30 @@ def random_date(format_template):
     Returns:
         str -- date formatted as <format_template>
     """
-    year = randrange(MINYEAR, MAXYEAR + 1)
-    month = randrange(1, 13)
-    day = randrange(1, 31) if month != 2 else randrange(1, 29)
-    hour = randrange(0, 24)
-    minute = randrange(0, 60)
-    second = randrange(0, 60)
-    microsecond = randrange(0, 1000000)
+    try:
+        year = randrange(MINYEAR, MAXYEAR + 1)
+        month = randrange(1, 13)
+        day = randrange(1, 31) if month != 2 else randrange(1, 29)
+        hour = randrange(0, 24)
+        minute = randrange(0, 60)
+        second = randrange(0, 60)
+        microsecond = randrange(0, 1000001)
 
-    date_ = dt(
-        year,
-        month,
-        day,
-        hour=hour,
-        minute=minute,
-        second=second,
-        microsecond=microsecond,
-    )
+        date_ = dt(
+            year,
+            month,
+            day,
+            hour=hour,
+            minute=minute,
+            second=second,
+            microsecond=microsecond,
+        )
 
-    return date_.strftime(format_template)
+        return date_.strftime(format_template)
+
+    except Exception as e:
+        print(f"Exception raised in func 'random_date': {str(e)}")
+        return 1
 
 
 def create_data_generator(assigned_args):
