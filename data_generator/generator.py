@@ -25,7 +25,7 @@ def _check_bounds(lower_bound, upper_bound):
 def _generator(
     rand_val_creator, upper_bound=None, lower_bound=None, date_template=None
 ):
-    """Returns generator for given <rand_val_creator> Callable.
+    """Yields random value from given <rand_val_creator> Callable.
 
     Arguments:
         rand_val_creator {Callable} -- func returning random data
