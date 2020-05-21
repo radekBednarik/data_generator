@@ -101,6 +101,6 @@ Basic check is done after CLI command is entered, whether argument values for da
 
   - this will generate 10 rows of data with integer in the interval <-1000, 1000> and float in the inteval <-100000.0, 0.0>
 
-- python3 -m data*generator data random_dates_without_separators`:date:`%Y%m%d%H%M%S random_dates_with_separators`:date:`%Y-%m*%d*-*%H-%M\_%S 10
+- python3 -m data*generator data random_dates_without_separators`:date:`%Y%m%d%H%M%S random_dates_with_separators`:date:`%Y-%m-%d_%H-%M-%S 10
 
   - geneates two columns of random dates with and without using the allowed separators
