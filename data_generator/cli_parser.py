@@ -1,4 +1,5 @@
 import argparse
+import datetime
 import re
 
 
@@ -30,7 +31,8 @@ def parse_inputs():
         help="Specify columns, their datatype and max size.\nExamples: \
             String: column1:str:0:50\n \
             Float:  column2:float:-100:100\n \
-            Int:    column3:int:-100:100",
+            Int: column3:int:-100:100\n \
+            Date: column4:date:%Y%m%d_%H%M%S",
     )
     data_parser.add_argument(
         "rows",
@@ -62,7 +64,7 @@ def verify(inputs):
         None: OK, 1: NOK, if RuntimeError is raised and caught
     """
     regex = re.compile(
-        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int):-?\d+:\d+$)|(^[a-zA-Z0-9_]+:(float):-?\d+\.\d*:\d+\.\d*$)"
+        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int):-?\d+:\d+$)|(^[a-zA-Z0-9_]+:(float):-?\d+\.\d*:\d+\.\d*$)|(^[A-Za-z0-9_]+:date:[A-Za-z%_\-]*$)"
     )
 
     try:
@@ -105,14 +107,20 @@ def convert_args(args):
             type_ -- type to add as value (default: {None})
 
         Returns:
-            dict with assigned values and converted values
+            dict with assigned values and converted values, 1: Nothing was returned
         """
-        return dict(
-            data_type=type_,
-            column_name=chunks[0],
-            lower_bound=float(chunks[2]),
-            upper_bound=float(chunks[3]),
-        )
+        if (type_ is str) or (type_ is int) or (type_ is float):
+            return dict(
+                data_type=type_,
+                column_name=chunks[0],
+                lower_bound=float(chunks[2]),
+                upper_bound=float(chunks[3]),
+            )
+        if type_ is datetime.datetime:
+            return dict(
+                data_type=type_, column_name=chunks[0], format_template=chunks[2]
+            )
+        return 1
 
     output = {}
     args_ = vars(args)
@@ -132,6 +140,8 @@ def convert_args(args):
                     output[key].append(assign(chunks, type_=int))
                 elif chunks[1] == "float":
                     output[key].append(assign(chunks, type_=float))
+                elif chunks[1] == "date":
+                    output[key].append(assign(chunks, type_=datetime.datetime))
 
         elif key == "rows":
             output[key] = int(value)

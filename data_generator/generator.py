@@ -1,3 +1,6 @@
+import datetime
+from datetime import MAXYEAR, MINYEAR
+from datetime import datetime as dt
 from random import choice, randrange, uniform
 from string import ascii_letters, digits
 
@@ -19,19 +22,27 @@ def _check_bounds(lower_bound, upper_bound):
         )
 
 
-def _generator(rand_val_creator, upper_bound, lower_bound):
+def _generator(
+    rand_val_creator, upper_bound=None, lower_bound=None, date_template=None
+):
     """Returns generator for given <rand_val_creator> Callable.
 
     Arguments:
         rand_val_creator {Callable} -- func returning random data
         upper_bound -- upper bound of the interval from which random data is created
         lower_bound -- lower bound of the interval from which random data is created
+        date_template -- template for date
 
     Yields:
         random value 
     """
-    while True:
-        yield rand_val_creator(upper_bound, lower_bound)
+    if (upper_bound is not None) and (lower_bound is not None):
+        while True:
+            yield rand_val_creator(lower_bound, upper_bound)
+
+    if date_template is not None:
+        while True:
+            yield rand_val_creator(date_template)
 
 
 def random_string(lower_bound, upper_bound):
@@ -115,11 +126,49 @@ def random_float(lower_bound, upper_bound):
         return 1
 
 
+def random_date(format_template):
+    """Returns date str formatted as <format_template> specifies.
+
+    Templating supports:
+        %Y, %m, %d, %H, %M, %S, %f, _, -
+
+    Arguments:
+        format_template {str} -- format template for date object
+
+    Returns:
+        str -- date formatted as <format_template>
+    """
+    try:
+        year = randrange(MINYEAR, MAXYEAR + 1)
+        month = randrange(1, 13)
+        day = randrange(1, 31) if month != 2 else randrange(1, 29)
+        hour = randrange(0, 24)
+        minute = randrange(0, 60)
+        second = randrange(0, 60)
+        microsecond = randrange(0, 1000001)
+
+        date_ = dt(
+            year,
+            month,
+            day,
+            hour=hour,
+            minute=minute,
+            second=second,
+            microsecond=microsecond,
+        )
+
+        return date_.strftime(format_template)
+
+    except Exception as e:
+        print(f"Exception raised in func 'random_date': {str(e)}")
+        return 1
+
+
 def create_data_generator(assigned_args):
     """Returns data generator for given arguments datatype.
 
     Arguments:
-        assigned_args -- parsed cli input for given datatype, like int, str, or float
+        assigned_args -- parsed cli input for given datatype, like int, str, float, date
 
     Returns:
         generator object; 1: if NOK
@@ -127,13 +176,22 @@ def create_data_generator(assigned_args):
     aa = assigned_args
 
     if aa["data_type"] is str:
-        return _generator(random_string, aa["lower_bound"], aa["upper_bound"])
+        return _generator(
+            random_string, lower_bound=aa["lower_bound"], upper_bound=aa["upper_bound"]
+        )
 
     if aa["data_type"] is int:
-        return _generator(random_int, aa["lower_bound"], aa["upper_bound"])
+        return _generator(
+            random_int, lower_bound=aa["lower_bound"], upper_bound=aa["upper_bound"]
+        )
 
     if aa["data_type"] is float:
-        return _generator(random_float, aa["lower_bound"], aa["upper_bound"])
+        return _generator(
+            random_float, lower_bound=aa["lower_bound"], upper_bound=aa["upper_bound"]
+        )
+
+    if aa["data_type"] is datetime.datetime:
+        return _generator(random_date, date_template=aa["format_template"])
 
     return 1
 
