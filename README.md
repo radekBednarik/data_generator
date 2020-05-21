@@ -63,7 +63,7 @@ What things you need to install the software and how to install them.
 
 - to specify date:
 
-  - <column_name>:date:<format_template>
+  - <column_name>`:date:`<format_template>
 
     - under the hood, generator works with Python's native datetime module. That means, that all datetime format codes listed <a href = "https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">HERE</a> should be suppported.
 
@@ -101,6 +101,6 @@ Basic check is done after CLI command is entered, whether argument values for da
 
   - this will generate 10 rows of data with integer in the interval <-1000, 1000> and float in the inteval <-100000.0, 0.0>
 
-- python3 -m data*generator data random_dates_without_separators:date:%Y%m%d%H%M%S random_dates_with_separators:date:%Y-%m*%d*-*%H-%M\_%S 10
+- python3 -m data*generator data random_dates_without_separators`:date:`%Y%m%d%H%M%S random_dates_with_separators`:date:`%Y-%m*%d*-*%H-%M\_%S 10
 
   - geneates two columns of random dates with and without using the allowed separators
