@@ -28,6 +28,10 @@ What things you need to install the software and how to install them.
 
 ### Installing
 
+- just use _[sudo] pip[3] install data_generator_
+
+OR:
+
 - clone this repo
 - switch to project directory root
 - run _[sudo] python3 setup.py install_
