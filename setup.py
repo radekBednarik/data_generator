@@ -16,7 +16,7 @@ setup(
     keywords="random data generator python3",
     url="https://github.com/bednaJedna/data_generator",
     classifiers=[
-        "License :: OSI Approved :: MIT",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
