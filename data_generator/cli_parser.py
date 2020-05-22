@@ -50,6 +50,15 @@ def parse_inputs() -> argparse.Namespace:
         default="output",
         help="Folder, where generated data are stored. If not provided, defaults to './output'",
     )
+    # MAIN
+    main_parser.add_argument(
+        "-sa",
+        "--save_as",
+        action="store",
+        type=str,
+        default="csv",
+        help="Specify file format of the output. Options are 'csv', 'json'. If not provided, defaults to 'csv'.",
+    )
     return main_parser.parse_args()
 
 

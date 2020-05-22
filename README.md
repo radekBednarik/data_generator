@@ -14,7 +14,7 @@ Random Data Generator.
 
 Create dataset with random data of datatypes int, float, str and date (more precisely python's datetime.datetime).
 
-Data are exported to .csv files.
+Data can be exported to .csv or .json files.
 
 Data are created using CLI commands.
 
@@ -42,6 +42,7 @@ OR:
 
 - data parameters are provided via CLI commands
 - currently, these Python's datatypes are supported: **int, str, float, datetime.datetime**
+- generated data can be exported as **.csv or .json** files
 
 ### OS differences
 
@@ -79,6 +80,16 @@ OR:
 
     - minimum year is 1, maximum year is 9999. See <a href = "https://docs.python.org/3/library/datetime.html#constants">documentation</a>.
 
+- to specify output file format:
+
+  - use optional parameter _-sa_ or _--save_as_
+
+  - this parameter has to be used before _data_ subparser and it's arguments
+
+  - if this parameter is not specified, default output file format is .csv
+
+  - example: _python[3] -m data_generator -sa json data ..._
+
 #### Formatting checks
 
 Basic check is done after CLI command is entered, whether argument values for data parser conforms to the syntax described above. It is not exhaustive, but should stop you from the major typos like forgetting the :, or .0, etc...
@@ -107,6 +118,14 @@ Basic check is done after CLI command is entered, whether argument values for da
 
   - this will generate 10 rows of data with integer in the interval <-1000, 1000> and float in the inteval <-100000.0, 0.0>
 
-- python3 -m data*generator data random_dates_without_separators`:date:`%Y%m%d%H%M%S random_dates_with_separators`:date:`%Y-%m-%d_%H-%M-%S 10
+- python3 -m data_generator data random*dates_without_separators`:date:`%Y%m%d%H%M%S random_dates_with_separators`:date:`%Y-%m-%d*%H-%M-%S 10
 
-  - geneates two columns of random dates with and without using the allowed separators
+  - generates two columns of random dates with and without using the allowed separators
+
+- python3 -m data_generator -sa json data_with_negative_int:int:-1000:1000 data_with_negative_float:float:-100000.0:0.0 10000
+
+  - this will generate data as .json file
+
+- python3 -m data_generator -sa csv ...
+
+  - this will generate data as .csv file
