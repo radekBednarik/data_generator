@@ -28,7 +28,7 @@ What things you need to install the software and how to install them.
 
 ### Installing
 
-- just use _[sudo] pip[3] install data_generator_
+- just use _[sudo] pip[3] install Data-Generator_
 
 OR:
 
