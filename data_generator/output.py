@@ -62,6 +62,8 @@ def to_json(data: dict, rows_count: int, output_folder: str) -> None:
     filename = f"data_{timestamp}.json"
     filepath = join(output_folder, filename)
 
+    _check_dir(output_folder)
+
     with Stream(Type.object, filename=filepath) as s:
         dict_ = {}
         for _ in tqdm(range(rows_count)):
