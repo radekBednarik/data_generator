@@ -4,6 +4,9 @@ from os import makedirs
 from os.path import isdir, join
 
 # pyre-ignore
+from jsonstreams import Stream, Type
+
+# pyre-ignore
 from tqdm import tqdm
 
 
@@ -45,3 +48,25 @@ def to_csv(data: dict, rows_count: int, output_folder: str) -> None:
                     row[header] = next(data_generator)
 
             writer.writerow(row)
+
+
+def to_json(data: dict, rows_count: int, output_folder: str) -> None:
+    """Saves generated data into .json file.
+
+    Arguments:
+        data {dict} -- converted CLI args as dict
+        rows_count {int} -- number of ros generated excluding "header"
+        output_folder {str} -- folder to save generated .json file into
+    """
+    timestamp = dt.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"data_{timestamp}.json"
+    filepath = join(output_folder, filename)
+
+    with Stream(Type.object, filename=filepath) as s:
+        dict_ = {}
+        for _ in tqdm(range(rows_count)):
+            for header, data_generator in list(data.items()):
+                if header not in dict_:
+                    dict_[header] = []
+                dict_[header].append(next(data_generator))
+            s.write("data", dict_)

@@ -1,7 +1,7 @@
 # pyre-ignore
 from data_generator.cli_parser import convert_args, parse_inputs, verify
 from data_generator.generator import assemble_data_generators
-from data_generator.output import to_csv
+from data_generator.output import to_csv, to_json
 
 
 def main() -> None:
@@ -17,11 +17,16 @@ def main() -> None:
         result = assemble_data_generators(converted_args)
 
         print("--> Data generators created.\r\n")
-        print("--> Data generation and saving to .csv starting... \n")
+        print("--> Data generation and saving starting... \n")
 
-        to_csv(result, converted_args["rows"], converted_args["folder"])
+        if args.save_as == "json":
+            to_json(result, converted_args["rows"], converted_args["folder"])
+        else:
+            to_csv(result, converted_args["rows"], converted_args["folder"])
 
-        print("\n--> FINISHED.")
+        print(
+            f"""\n--> FINISHED. Find your data at '{converted_args["folder"]}' folder."""
+        )
 
 
 if __name__ == "__main__":
