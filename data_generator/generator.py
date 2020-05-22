@@ -3,9 +3,10 @@ from datetime import MAXYEAR, MINYEAR
 from datetime import datetime as dt
 from random import choice, randrange, uniform
 from string import ascii_letters, digits
+from typing import Union, Callable, Generator
 
 
-def _check_bounds(lower_bound, upper_bound):
+def _check_bounds(lower_bound: float, upper_bound: float) -> None:
     """Checks, whether lower bound of the interval has not bigger value than upper bound.
     Raises ValueError, if it is so.
 
@@ -23,8 +24,8 @@ def _check_bounds(lower_bound, upper_bound):
 
 
 def _generator(
-    rand_val_creator, upper_bound=None, lower_bound=None, date_template=None
-):
+    rand_val_creator: Callable, upper_bound=None, lower_bound=None, date_template=None
+) -> Generator:
     """Yields random value from given <rand_val_creator> Callable.
 
     Arguments:
@@ -45,7 +46,7 @@ def _generator(
             yield rand_val_creator(date_template)
 
 
-def random_string(lower_bound, upper_bound):
+def random_string(lower_bound: int, upper_bound: int) -> Union[int, str]:
     """Generates random string from [A-Za-z0-9]. Lenght of the string
     is defined by CLI arguments provided by user. Basic check against lower bound being bigger 
     then upper bound is done.
@@ -75,7 +76,7 @@ def random_string(lower_bound, upper_bound):
         return 1
 
 
-def random_int(lower_bound, upper_bound):
+def random_int(lower_bound: int, upper_bound: int) -> int:
     """Generates random integer from inclusive interval <lower_bound, upper_bound>.
 
     Arguments:
@@ -97,7 +98,7 @@ def random_int(lower_bound, upper_bound):
         return 1
 
 
-def random_float(lower_bound, upper_bound):
+def random_float(lower_bound: float, upper_bound: float) -> Union[float, int]:
     """Generates random float from given interval.
 
     Given the rounding, the interval is (not) right-side inclusive, i.e.
@@ -126,7 +127,7 @@ def random_float(lower_bound, upper_bound):
         return 1
 
 
-def random_date(format_template):
+def random_date(format_template: str) -> Union[int, str]:
     """Returns date str formatted as <format_template> specifies.
 
     Templating supports:
@@ -164,7 +165,7 @@ def random_date(format_template):
         return 1
 
 
-def create_data_generator(assigned_args):
+def create_data_generator(assigned_args: dict) -> Union[Generator, int]:
     """Returns data generator for given arguments datatype.
 
     Arguments:
@@ -196,7 +197,7 @@ def create_data_generator(assigned_args):
     return 1
 
 
-def assemble_data_generators(converted_args):
+def assemble_data_generators(converted_args: dict) -> dict:
     """Returns dict with all columns names as keys and data generators as values.
 
     Arguments:

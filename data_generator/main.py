@@ -1,9 +1,10 @@
+# pyre-ignore
 from data_generator.cli_parser import convert_args, parse_inputs, verify
 from data_generator.generator import assemble_data_generators
 from data_generator.output import to_csv
 
 
-def main():
+def main() -> None:
     args = parse_inputs()
 
     print("--> CLI input parsed\r\n")

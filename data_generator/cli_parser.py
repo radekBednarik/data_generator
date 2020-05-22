@@ -1,9 +1,11 @@
+from typing import Optional
+
 import argparse
 import datetime
 import re
 
 
-def parse_inputs():
+def parse_inputs() -> argparse.Namespace:
     """Processes CLI input and returns argparse Namespace with entered arguments' values.
 
     Returns:
@@ -51,7 +53,7 @@ def parse_inputs():
     return main_parser.parse_args()
 
 
-def verify(inputs):
+def verify(inputs: argparse.Namespace) -> Optional[int]:
     """Verifies parsed CLI input strings.
 
     Arguments:
@@ -86,7 +88,7 @@ def verify(inputs):
     return None
 
 
-def convert_args(args):
+def convert_args(args: argparse.Namespace) -> dict:
     """Does conversion of parsed CLI args, which are all {str} into suitable 
     format and datatypes.
 

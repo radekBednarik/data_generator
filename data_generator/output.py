@@ -3,10 +3,11 @@ from datetime import datetime as dt
 from os import makedirs
 from os.path import isdir, join
 
+# pyre-ignore
 from tqdm import tqdm
 
 
-def _check_dir(dirpath):
+def _check_dir(dirpath: str) -> None:
     """Checks for <dirpath> existence and creates it recursively, if not found.
 
     Arguments:
@@ -16,7 +17,7 @@ def _check_dir(dirpath):
         makedirs(dirpath, exist_ok=True)
 
 
-def to_csv(data, rows_count, output_folder):
+def to_csv(data: dict, rows_count: int, output_folder: str) -> None:
     """Saves generated data into .csv file.
 
     Arguments:
