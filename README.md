@@ -44,6 +44,10 @@ OR:
 - currently, these Python's datatypes are supported: **int, str, float, datetime.datetime**
 - generated data can be exported as **.csv or .json** files
 
+  - using .csv file format does not impact memory, since data is written in the file as they are generated
+
+  - using .json file format has a memory impact, so be careful about that - this is given by Python's json module implementation, see Note <a href="https://docs.python.org/3/library/json.html#json.dump">HERE</a>. Data has to be firstly completely generated in memory and then written into the file
+
 ### OS differences
 
 - there should be no problems running this utility on standard linux distro or on Windows 10
