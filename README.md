@@ -14,7 +14,7 @@ Random Data Generator.
 
 Create dataset with random data of datatypes int, float, str and date (more precisely python's datetime.datetime).
 
-Data can be exported to .csv or .json files.
+Data can be exported to .csv, .xlsx or .json files.
 
 Data are created using CLI commands.
 
@@ -42,9 +42,11 @@ OR:
 
 - data parameters are provided via CLI commands
 - currently, these Python's datatypes are supported: **int, str, float, datetime.datetime**
-- generated data can be exported as **.csv or .json** files
+- generated data can be exported as **.csv, .xlsx or .json** files
 
   - using .csv file format does not impact memory, since data is written in the file as they are generated
+
+  - using .xlsx file format does not impact memory, since memory is flushed after each row of data is written. For details, see xlsxwriter's <a href="https://xlsxwriter.readthedocs.io/working_with_memory.html">documentation</a>
 
   - using .json file format has a memory impact, so be careful about that - this is given by Python's json module implementation, see Note <a href="https://docs.python.org/3/library/json.html#json.dump">HERE</a>. Data has to be firstly completely generated in memory and then written into the file
 
@@ -91,6 +93,14 @@ OR:
   - this parameter has to be used before _data_ subparser and it's arguments
 
   - if this parameter is not specified, default output file format is .csv
+
+  - parameter's values:
+
+    - csv: csv
+
+    - json: json
+
+    - xlsx: xlsx
 
   - example: _python[3] -m data_generator -sa json data ..._
 

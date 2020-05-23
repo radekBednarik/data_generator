@@ -1,7 +1,7 @@
 # pyre-ignore
 from data_generator.cli_parser import convert_args, parse_inputs, verify
 from data_generator.generator import assemble_data_generators
-from data_generator.output import to_csv, to_json
+from data_generator.output import to_csv, to_json, to_excel
 
 
 def main() -> None:
@@ -21,6 +21,10 @@ def main() -> None:
 
         if args.save_as == "json":
             to_json(result, converted_args["rows"], converted_args["folder"])
+
+        elif args.save_as == "xlsx":
+            to_excel(result, converted_args["rows"], converted_args["folder"])
+
         else:
             to_csv(result, converted_args["rows"], converted_args["folder"])
 
