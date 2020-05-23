@@ -5,9 +5,9 @@ with open("README.md", "r") as f:
 
 setup(
     name="Data Generator",
-    version="0.2.0.1",
+    version="0.2.1.0",
     packages=find_packages(),
-    install_requires=["tqdm", "jsonstreams"],
+    install_requires=["tqdm"],
     author="bednaJedna",
     author_email="bednarik.radek@gmail.com",
     description="Random Data Generator",

@@ -1,10 +1,8 @@
 import csv
+import json
 from datetime import datetime as dt
 from os import makedirs
 from os.path import isdir, join
-
-# pyre-ignore
-from jsonstreams import Stream, Type
 
 # pyre-ignore
 from tqdm import tqdm
@@ -64,11 +62,14 @@ def to_json(data: dict, rows_count: int, output_folder: str) -> None:
 
     _check_dir(output_folder)
 
-    with Stream(Type.object, filename=filepath) as s:
-        dict_ = {}
-        for _ in tqdm(range(rows_count)):
-            for header, data_generator in list(data.items()):
-                if header not in dict_:
-                    dict_[header] = []
-                dict_[header].append(next(data_generator))
-            s.write("data", dict_)
+    output = {}
+
+    for _ in tqdm(range(rows_count)):
+        for header, data_generator in list(data.items()):
+            if header not in output:
+                output[header] = []
+
+            output[header].append(next(data_generator))
+
+    with open(filepath, mode="w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)

@@ -146,7 +146,7 @@ def random_date(format_template: str) -> Union[int, str]:
         hour = randrange(0, 24)
         minute = randrange(0, 60)
         second = randrange(0, 60)
-        microsecond = randrange(0, 1000001)
+        microsecond = randrange(0, 1000000)
 
         date_ = dt(
             year,
