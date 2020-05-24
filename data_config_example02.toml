@@ -1,0 +1,27 @@
+# example of config toml
+# IT IS IMPORTANT to uphold the naming of the keys and tables
+    
+rows = 100000
+
+[[specify]]
+    data_type = "int"
+    column_name = "column1"
+    lower_bound = 900
+    upper_bound = 1000
+
+[[specify]]
+    data_type = "float"
+    column_name = "column2"
+    lower_bound = 900.0
+    upper_bound = 1000.0
+
+[[specify]]
+    data_type = "str"
+    column_name = "column3"
+    lower_bound = 0
+    upper_bound = 100
+
+[[specify]]
+    data_type = "date"
+    column_name = "column4"
+    format_template = "%Y%m%d_%H%M%S"

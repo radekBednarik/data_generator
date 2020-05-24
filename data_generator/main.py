@@ -5,6 +5,7 @@ from typing import Union
 from data_generator.cli_parser import convert_args, parse_inputs, verify
 from data_generator.generator import assemble_data_generators
 from data_generator.output import to_csv, to_excel, to_json
+from data_generator.toml import get_input
 
 
 def run_cli_inputs(args: argparse.Namespace) -> Union[tuple, int]:
@@ -19,7 +20,21 @@ def run_cli_inputs(args: argparse.Namespace) -> Union[tuple, int]:
         print("--> Data generation and saving starting... \n")
 
         return (result, converted_args)
+    return 1
 
+
+def run_toml_inputs(args: argparse.Namespace) -> Union[tuple, int]:
+    converted_args = convert_args(args)
+
+    print("--> Parsed CLI inputs converted to dictionary.\r\n")
+
+    if len(converted_args["toml"]) > 0:
+        for filepath in converted_args["toml"]:
+            conf_dict = get_input(filepath)
+            print(conf_dict)
+            result = assemble_data_generators(conf_dict)
+
+            return (result, converted_args)
     return 1
 
 
@@ -41,6 +56,10 @@ def main() -> None:
 
     if hasattr(args, "specify"):
         output = run_cli_inputs(args)
+        run_outputs(args, output)
+
+    if hasattr(args, "toml"):
+        output = run_toml_inputs(args)
         run_outputs(args, output)
 
 
