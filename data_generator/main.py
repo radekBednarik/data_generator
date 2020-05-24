@@ -1,5 +1,5 @@
 import argparse
-from typing import Union
+from typing import Union, List
 
 # pyre-ignore
 from data_generator.cli_parser import convert_args, parse_inputs, verify
@@ -25,38 +25,43 @@ def run_cli_inputs(args: argparse.Namespace) -> Union[tuple, int]:
         result = assemble_data_generators(converted_args)
 
         print("--> Data generators created.\r\n")
-        print("--> Data generation and saving starting... \n")
 
         return (result, converted_args)
     return 1
 
 
-def run_toml_inputs(args: argparse.Namespace) -> Union[tuple, int]:
+def run_toml_inputs(args: argparse.Namespace) -> Union[List[tuple], List[int]]:
     """Retruns data generators and other needed args, when user uses TOML files to provide inputs.
 
     Arguments:
         args {argparse.Namespace} -- args entered via CLI
 
     Returns:
-        Union[tuple, int] -- (data generators dict, cli args dict), 1: if NOK
+        Union[List[tuple], int] -- list of (data generators dict, cli args dict), 1: if NOK
     """
-    converted_args = convert_args(args)
+    output = []
 
-    print("--> Parsed CLI inputs converted to dictionary.\r\n")
+    try:
+        converted_args = convert_args(args)
 
-    if len(converted_args["toml"]) > 0:
-        for filepath in converted_args["toml"]:
-            conf_dict = get_input(filepath)
-            # hack
-            converted_args["rows"] = conf_dict["rows"]
+        print("--> Parsed CLI inputs converted to dictionary.\r\n")
 
-            result = assemble_data_generators(conf_dict)
+        if len(converted_args["toml"]) > 0:
+            for filepath in converted_args["toml"]:
+                conf_dict = get_input(filepath)
+                # hack
+                converted_args["rows"] = conf_dict["rows"]
 
-            print("--> Data generators created.\r\n")
-            print("--> Data generation and saving starting... \n")
+                result = assemble_data_generators(conf_dict)
 
-            return (result, converted_args)
-    return 1
+                print("--> Data generators created.\r\n")
+
+                output.append((result, converted_args))
+            return output
+        return [1]
+    except Exception as e:
+        print(f"Exception in func 'run_toml_inputs': {str(e)}")
+        return [1]
 
 
 def run_outputs(args: argparse.Namespace, inputs: tuple) -> None:
@@ -66,6 +71,8 @@ def run_outputs(args: argparse.Namespace, inputs: tuple) -> None:
         args {argparse.Namespace} -- args entered via CLI
         inputs {tuple} -- (data generators dict, cli args dict)
     """
+    print("--> Data generation and saving starting... \n")
+
     if args.save_as == "json":
         to_json(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
     elif args.save_as == "xlsx":
@@ -86,8 +93,9 @@ def main() -> None:
         run_outputs(args, output)
 
     if hasattr(args, "toml"):
-        output = run_toml_inputs(args)
-        run_outputs(args, output)
+        outputs = run_toml_inputs(args)
+        for output in outputs:
+            run_outputs(args, output)
 
 
 if __name__ == "__main__":
