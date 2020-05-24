@@ -1,6 +1,7 @@
 # example of config toml
 # IT IS IMPORTANT to uphold the naming of the keys and tables
-    
+
+
 rows = 100000
 
 [[specify]]

@@ -32,6 +32,9 @@ def run_toml_inputs(args: argparse.Namespace) -> Union[tuple, int]:
         for filepath in converted_args["toml"]:
             conf_dict = get_input(filepath)
             print(conf_dict)
+            # hack
+            converted_args["rows"] = conf_dict["rows"]
+
             result = assemble_data_generators(conf_dict)
 
             return (result, converted_args)
@@ -60,6 +63,7 @@ def main() -> None:
 
     if hasattr(args, "toml"):
         output = run_toml_inputs(args)
+        print(output)
         run_outputs(args, output)
 
 
