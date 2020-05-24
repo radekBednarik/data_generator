@@ -1,14 +1,22 @@
+import argparse
+from typing import Union, List
+
 # pyre-ignore
 from data_generator.cli_parser import convert_args, parse_inputs, verify
 from data_generator.generator import assemble_data_generators
-from data_generator.output import to_csv, to_json, to_excel
+from data_generator.output import to_csv, to_excel, to_json
+from data_generator.toml import get_input
 
 
-def main() -> None:
-    args = parse_inputs()
+def run_cli_inputs(args: argparse.Namespace) -> Union[tuple, int]:
+    """Returns data generators and other needed args, when user uses CLI to enter inputs.
 
-    print("--> CLI input parsed\r\n")
+    Arguments:
+        args {argparse.Namespace} -- args entered via CLI
 
+    Returns:
+        Union[tuple, int] -- (data generators dict, cli args dict), 1: if NOK
+    """
     if verify(args) is None:
         converted_args = convert_args(args)
 
@@ -17,20 +25,77 @@ def main() -> None:
         result = assemble_data_generators(converted_args)
 
         print("--> Data generators created.\r\n")
-        print("--> Data generation and saving starting... \n")
 
-        if args.save_as == "json":
-            to_json(result, converted_args["rows"], converted_args["folder"])
+        return (result, converted_args)
+    return 1
 
-        elif args.save_as == "xlsx":
-            to_excel(result, converted_args["rows"], converted_args["folder"])
 
-        else:
-            to_csv(result, converted_args["rows"], converted_args["folder"])
+def run_toml_inputs(args: argparse.Namespace) -> Union[List[tuple], List[int]]:
+    """Retruns data generators and other needed args, when user uses TOML files to provide inputs.
 
-        print(
-            f"""\n--> FINISHED. Find your data at '{converted_args["folder"]}' folder."""
-        )
+    Arguments:
+        args {argparse.Namespace} -- args entered via CLI
+
+    Returns:
+        Union[List[tuple], int] -- list of (data generators dict, cli args dict), 1: if NOK
+    """
+    output = []
+
+    try:
+        converted_args = convert_args(args)
+
+        print("--> Parsed CLI inputs converted to dictionary.\r\n")
+
+        if len(converted_args["toml"]) > 0:
+            for filepath in converted_args["toml"]:
+                conf_dict = get_input(filepath)
+                # hack
+                converted_args["rows"] = conf_dict["rows"]
+
+                result = assemble_data_generators(conf_dict)
+
+                print("--> Data generators created.\r\n")
+
+                output.append((result, converted_args))
+            return output
+        return [1]
+    except Exception as e:
+        print(f"Exception in func 'run_toml_inputs': {str(e)}")
+        return [1]
+
+
+def run_outputs(args: argparse.Namespace, inputs: tuple) -> None:
+    """Generates data via generators and saves them to specified file format.
+
+    Arguments:
+        args {argparse.Namespace} -- args entered via CLI
+        inputs {tuple} -- (data generators dict, cli args dict)
+    """
+    print("--> Data generation and saving starting... \n")
+
+    if args.save_as == "json":
+        to_json(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
+    elif args.save_as == "xlsx":
+        to_excel(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
+    else:
+        to_csv(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
+
+    print(f"""\n--> FINISHED. Find your data at '{inputs[1]["folder"]}' folder.""")
+
+
+def main() -> None:
+    args = parse_inputs()
+
+    print("--> CLI input parsed\r\n")
+
+    if hasattr(args, "specify"):
+        output = run_cli_inputs(args)
+        run_outputs(args, output)
+
+    if hasattr(args, "toml"):
+        outputs = run_toml_inputs(args)
+        for output in outputs:
+            run_outputs(args, output)
 
 
 if __name__ == "__main__":
