@@ -1,7 +1,5 @@
 # pyre-ignore
 import sys
-from os import getcwd
-from os.path import join
 
 from tomlkit import parse
 
@@ -15,8 +13,6 @@ def get_input(filepath: str) -> dict:
     Returns:
         dict -- TOML content as dict
     """
-    filepath = join(getcwd(), filepath)
-
     try:
         with open(filepath, mode="r", encoding="utf-8") as f:
             return parse(f.read())

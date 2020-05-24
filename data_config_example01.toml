@@ -1,5 +1,7 @@
 # example of config toml
-# IT IS IMPORTANT to uphold the naming of the keys and tables
+# IT IS IMPORTANT to uphold the naming of the keys and tables.
+# Rows must be specified before table or it will be considered
+# as part of it. This is by TOML implementation design.
 
 rows = 1000
 
