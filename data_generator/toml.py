@@ -7,6 +7,14 @@ from tomlkit import parse
 
 
 def get_input(filepath: str) -> dict:
+    """Returns TOML file content as dict.
+
+    Arguments:
+        filepath {str} -- filepath to TOML file
+
+    Returns:
+        dict -- TOML content as dict
+    """
     filepath = join(getcwd(), filepath)
 
     try:

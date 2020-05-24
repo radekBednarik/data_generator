@@ -1,8 +1,7 @@
-from typing import Optional, Union
-
 import argparse
 import datetime
 import re
+from typing import Optional, Union
 
 
 def parse_inputs() -> argparse.Namespace:

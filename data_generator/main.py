@@ -9,6 +9,14 @@ from data_generator.toml import get_input
 
 
 def run_cli_inputs(args: argparse.Namespace) -> Union[tuple, int]:
+    """Returns data generators and other needed args, when user uses CLI to enter inputs.
+
+    Arguments:
+        args {argparse.Namespace} -- args entered via CLI
+
+    Returns:
+        Union[tuple, int] -- (data generators dict, cli args dict), 1: if NOK
+    """
     if verify(args) is None:
         converted_args = convert_args(args)
 
@@ -24,6 +32,14 @@ def run_cli_inputs(args: argparse.Namespace) -> Union[tuple, int]:
 
 
 def run_toml_inputs(args: argparse.Namespace) -> Union[tuple, int]:
+    """Retruns data generators and other needed args, when user uses TOML files to provide inputs.
+
+    Arguments:
+        args {argparse.Namespace} -- args entered via CLI
+
+    Returns:
+        Union[tuple, int] -- (data generators dict, cli args dict), 1: if NOK
+    """
     converted_args = convert_args(args)
 
     print("--> Parsed CLI inputs converted to dictionary.\r\n")
@@ -31,17 +47,25 @@ def run_toml_inputs(args: argparse.Namespace) -> Union[tuple, int]:
     if len(converted_args["toml"]) > 0:
         for filepath in converted_args["toml"]:
             conf_dict = get_input(filepath)
-            print(conf_dict)
             # hack
             converted_args["rows"] = conf_dict["rows"]
 
             result = assemble_data_generators(conf_dict)
+
+            print("--> Data generators created.\r\n")
+            print("--> Data generation and saving starting... \n")
 
             return (result, converted_args)
     return 1
 
 
 def run_outputs(args: argparse.Namespace, inputs: tuple) -> None:
+    """Generates data via generators and saves them to specified file format.
+
+    Arguments:
+        args {argparse.Namespace} -- args entered via CLI
+        inputs {tuple} -- (data generators dict, cli args dict)
+    """
     if args.save_as == "json":
         to_json(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
     elif args.save_as == "xlsx":
@@ -63,7 +87,6 @@ def main() -> None:
 
     if hasattr(args, "toml"):
         output = run_toml_inputs(args)
-        print(output)
         run_outputs(args, output)
 
 
