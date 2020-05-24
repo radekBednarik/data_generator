@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 import argparse
 import datetime
@@ -24,7 +24,11 @@ def parse_inputs() -> argparse.Namespace:
     data_parser = subparsers.add_parser(
         "data", help="Specify data you want to have generated."
     )
-    # DATA
+    toml_parser = subparsers.add_parser(
+        "toml",
+        help="Enter filepath(s) to .toml files with data configuration(s) you want to have generated.",
+    )
+    # DATA parser args
     data_parser.add_argument(
         "specify",
         action="extend",
@@ -42,7 +46,16 @@ def parse_inputs() -> argparse.Namespace:
         type=int,
         help="Specify number of rows to be generated, header is excluded.",
     )
-    data_parser.add_argument(
+    # TOML parser args
+    toml_parser.add_argument(
+        "toml",
+        action="extend",
+        nargs="+",
+        type=str,
+        help="Specify filepath(s) to .toml files with data specifications.",
+    )
+    # MAIN parser args
+    main_parser.add_argument(
         "-f",
         "--folder",
         action="store",
@@ -50,7 +63,6 @@ def parse_inputs() -> argparse.Namespace:
         default="output",
         help="Folder, where generated data are stored. If not provided, defaults to './output'",
     )
-    # MAIN
     main_parser.add_argument(
         "-sa",
         "--save_as",
@@ -108,7 +120,9 @@ def convert_args(args: argparse.Namespace) -> dict:
         converted cli arguments as dictionary
     """
 
-    def assign(chunks, type_=None):
+    def assign(
+        chunks: list, type_: Union[str, float, int, datetime.datetime, None] = None
+    ) -> Union[int, dict]:
         """Transforms and assigns values of data args. Returns dict.
 
         Arguments:
@@ -153,6 +167,11 @@ def convert_args(args: argparse.Namespace) -> dict:
                     output[key].append(assign(chunks, type_=float))
                 elif chunks[1] == "date":
                     output[key].append(assign(chunks, type_=datetime.datetime))
+
+        elif key == "toml":
+            output[key] = []
+            for item in value:
+                output[key].append(item)
 
         elif key == "rows":
             output[key] = int(value)

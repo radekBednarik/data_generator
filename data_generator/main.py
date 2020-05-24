@@ -1,14 +1,13 @@
+import argparse
+from typing import Union
+
 # pyre-ignore
 from data_generator.cli_parser import convert_args, parse_inputs, verify
 from data_generator.generator import assemble_data_generators
-from data_generator.output import to_csv, to_json, to_excel
+from data_generator.output import to_csv, to_excel, to_json
 
 
-def main() -> None:
-    args = parse_inputs()
-
-    print("--> CLI input parsed\r\n")
-
+def run_cli_inputs(args: argparse.Namespace) -> Union[tuple, int]:
     if verify(args) is None:
         converted_args = convert_args(args)
 
@@ -19,18 +18,30 @@ def main() -> None:
         print("--> Data generators created.\r\n")
         print("--> Data generation and saving starting... \n")
 
-        if args.save_as == "json":
-            to_json(result, converted_args["rows"], converted_args["folder"])
+        return (result, converted_args)
 
-        elif args.save_as == "xlsx":
-            to_excel(result, converted_args["rows"], converted_args["folder"])
+    return 1
 
-        else:
-            to_csv(result, converted_args["rows"], converted_args["folder"])
 
-        print(
-            f"""\n--> FINISHED. Find your data at '{converted_args["folder"]}' folder."""
-        )
+def run_outputs(args: argparse.Namespace, inputs: tuple) -> None:
+    if args.save_as == "json":
+        to_json(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
+    elif args.save_as == "xlsx":
+        to_excel(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
+    else:
+        to_csv(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
+
+    print(f"""\n--> FINISHED. Find your data at '{inputs[1]["folder"]}' folder.""")
+
+
+def main() -> None:
+    args = parse_inputs()
+
+    print("--> CLI input parsed\r\n")
+
+    if hasattr(args, "specify"):
+        output = run_cli_inputs(args)
+        run_outputs(args, output)
 
 
 if __name__ == "__main__":
