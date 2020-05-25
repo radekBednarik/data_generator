@@ -170,6 +170,6 @@ Basic check is done after CLI command is entered, whether argument values for da
 
   - this will generate two outputs files according to specifications in these two .TOML files.
 
-- `python[3] -m data_parser -sa json -f test_folder/subfolder /custom/path/to/data_config_example01.toml`
+- `python[3] -m data_parser -sa json -f test_folder/subfolder toml /custom/path/to/data_config_example01.toml`
 
   - this will generate one output .json file into test_folder/subfolder as specified in your provided path
