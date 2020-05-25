@@ -172,4 +172,7 @@ def convert_args(args: argparse.Namespace) -> dict:
         elif key == "folder":
             output[key] = value
 
+        elif key == "save_as":
+            output[key] = value
+
     return output

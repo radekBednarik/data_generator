@@ -138,7 +138,7 @@ Basic check is done after CLI command is entered, whether argument values for da
 
   - generated .csv file is saved into default _output_ folder. This can be changed using _-f_ or _--folder_ parameter
 
-- `python3 -m data_generator data header_with_underscore:str:10:10 100 -f my_output_folder/subfolder`
+- `python3 -m data_generator -f my_output_folder/subfolder data header_with_underscore:str:10:10 100`
 
   - this will generate one "column" of random str data of fixed 10 chars lenght with 100 rows into the target folder of your choice. If the folder does not exist, it will be created
 
@@ -152,7 +152,7 @@ Basic check is done after CLI command is entered, whether argument values for da
 
   - generates two columns of random dates with and without using the allowed separators
 
-- `python3 -m data_generator -sa json data_with_negative_int:int:-1000:1000 data_with_negative_float:float:-100000.0:0.0 10000`
+- `python3 -m data_generator -sa json data data_with_negative_int:int:-1000:1000 data_with_negative_float:float:-100000.0:0.0 10000`
 
   - this will generate data as .json file
 
@@ -170,6 +170,6 @@ Basic check is done after CLI command is entered, whether argument values for da
 
   - this will generate two outputs files according to specifications in these two .TOML files.
 
-- `python[3] -m data_generator -sa json -f test_folder/subfolder toml /custom/path/to/data_config_example01.toml`
+- `python[3] -m data_generator toml /custom/path/to/data_config_example01.toml`
 
-  - this will generate one output .json file into test_folder/subfolder as specified in your provided path
+  - this will generate one output via specification file in custom location

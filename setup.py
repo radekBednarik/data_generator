@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="Data Generator",
-    version="0.4.1.1",
+    version="0.4.2.2",
     packages=find_packages(),
     install_requires=["tqdm", "XlsxWriter", "tomlkit"],
     author="bednaJedna",
