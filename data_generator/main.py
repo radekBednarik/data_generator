@@ -1,5 +1,5 @@
 import argparse
-from typing import Union, List
+from typing import List, Union
 
 # pyre-ignore
 from data_generator.cli_parser import convert_args, parse_inputs, verify

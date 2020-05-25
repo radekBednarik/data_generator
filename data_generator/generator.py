@@ -1,9 +1,8 @@
-import datetime
 from datetime import MAXYEAR, MINYEAR
 from datetime import datetime as dt
 from random import choice, randrange, uniform
 from string import ascii_letters, digits
-from typing import Union, Callable, Generator
+from typing import Callable, Generator, Union
 
 
 def _check_bounds(lower_bound: float, upper_bound: float) -> None:
@@ -176,22 +175,22 @@ def create_data_generator(assigned_args: dict) -> Union[Generator, int]:
     """
     aa = assigned_args
 
-    if (aa["data_type"] is str) or (aa["data_type"] == "str"):
+    if aa["data_type"] == "str":
         return _generator(
             random_string, lower_bound=aa["lower_bound"], upper_bound=aa["upper_bound"]
         )
 
-    if (aa["data_type"] is int) or (aa["data_type"] == "int"):
+    if aa["data_type"] == "int":
         return _generator(
             random_int, lower_bound=aa["lower_bound"], upper_bound=aa["upper_bound"]
         )
 
-    if (aa["data_type"] is float) or (aa["data_type"] == "float"):
+    if aa["data_type"] == "float":
         return _generator(
             random_float, lower_bound=aa["lower_bound"], upper_bound=aa["upper_bound"]
         )
 
-    if (aa["data_type"] is datetime.datetime) or (aa["data_type"] == "date"):
+    if aa["data_type"] == "date":
         return _generator(random_date, date_template=aa["format_template"])
 
     return 1

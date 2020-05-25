@@ -1,5 +1,4 @@
 import argparse
-import datetime
 import re
 from typing import Optional, Union
 
@@ -119,30 +118,25 @@ def convert_args(args: argparse.Namespace) -> dict:
         converted cli arguments as dictionary
     """
 
-    def assign(
-        chunks: list, type_: Union[str, float, int, datetime.datetime, None] = None
-    ) -> Union[int, dict]:
+    def assign(chunks: list) -> Union[int, dict]:
         """Transforms and assigns values of data args. Returns dict.
 
         Arguments:
             chunks -- list of chunks of string splitted by given parameter
 
-        Keyword Arguments:
-            type_ -- type to add as value (default: {None})
-
         Returns:
             dict with assigned values and converted values, 1: Nothing was returned
         """
-        if (type_ is str) or (type_ is int) or (type_ is float):
+        if chunks[1] in ("str", "int", "float"):
             return dict(
-                data_type=type_,
+                data_type=chunks[1],
                 column_name=chunks[0],
                 lower_bound=float(chunks[2]),
                 upper_bound=float(chunks[3]),
             )
-        if type_ is datetime.datetime:
+        if chunks[1] in ("date"):
             return dict(
-                data_type=type_, column_name=chunks[0], format_template=chunks[2]
+                data_type=chunks[1], column_name=chunks[0], format_template=chunks[2]
             )
         return 1
 
@@ -159,13 +153,13 @@ def convert_args(args: argparse.Namespace) -> dict:
                 chunks = v.split(sep=":")
 
                 if chunks[1] == "str":
-                    output[key].append(assign(chunks, type_=str))
+                    output[key].append(assign(chunks))
                 elif chunks[1] == "int":
-                    output[key].append(assign(chunks, type_=int))
+                    output[key].append(assign(chunks))
                 elif chunks[1] == "float":
-                    output[key].append(assign(chunks, type_=float))
+                    output[key].append(assign(chunks))
                 elif chunks[1] == "date":
-                    output[key].append(assign(chunks, type_=datetime.datetime))
+                    output[key].append(assign(chunks))
 
         elif key == "toml":
             output[key] = []

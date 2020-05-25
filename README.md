@@ -148,7 +148,7 @@ Basic check is done after CLI command is entered, whether argument values for da
 
   - this will generate 10 rows of data with integer in the interval <-1000, 1000> and float in the inteval <-100000.0, 0.0>
 
-- `python3 -m data_generator data random_dates_without_separators:date:%Y%m%d%H%M%S random_dates_with_separators:date:%Y-%m-%d*%H-%M-%S 10`
+- `python3 -m data_generator data random_dates_without_separators:date:%Y%m%d%H%M%S random_dates_with_separators:date:%Y-%m-%d_%H-%M-%S 10`
 
   - generates two columns of random dates with and without using the allowed separators
 
@@ -166,10 +166,10 @@ Basic check is done after CLI command is entered, whether argument values for da
 
 ##### CLI examples for TOML parser
 
-- `python[3] -m data_parser toml data_config_example01.toml data_config_example02.toml`
+- `python[3] -m data_generator toml data_config_example01.toml data_config_example02.toml`
 
   - this will generate two outputs files according to specifications in these two .TOML files.
 
-- `python[3] -m data_parser -sa json -f test_folder/subfolder toml /custom/path/to/data_config_example01.toml`
+- `python[3] -m data_generator -sa json -f test_folder/subfolder toml /custom/path/to/data_config_example01.toml`
 
   - this will generate one output .json file into test_folder/subfolder as specified in your provided path
