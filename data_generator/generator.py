@@ -2,7 +2,7 @@ from datetime import MAXYEAR, MINYEAR
 from datetime import datetime as dt
 from random import choice, randrange, uniform
 from string import ascii_letters, digits
-from typing import Callable, Generator, Union
+from typing import Any, Callable, Generator, Union
 
 
 def _check_bounds(lower_bound: float, upper_bound: float) -> None:
