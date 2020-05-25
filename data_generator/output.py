@@ -6,7 +6,6 @@ from os.path import isdir, join
 
 # pyre-ignore
 from tqdm import tqdm
-
 # pyre-ignore
 from xlsxwriter import Workbook
 
