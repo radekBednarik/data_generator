@@ -2,7 +2,7 @@ from datetime import MAXYEAR, MINYEAR
 from datetime import datetime as dt
 from random import choice, randrange, uniform
 from string import ascii_letters, digits
-from typing import Any, Callable, Generator, Union
+from typing import Callable, Generator, Union
 
 
 def _check_bounds(lower_bound: float, upper_bound: float) -> None:
@@ -43,6 +43,10 @@ def _generator(
     if date_template is not None:
         while True:
             yield rand_val_creator(date_template)
+
+    if (upper_bound is None) and (lower_bound is None) and (date_template is None):
+        while True:
+            yield rand_val_creator()
 
 
 def random_string(lower_bound: int, upper_bound: int) -> Union[int, str]:
@@ -164,6 +168,40 @@ def random_date(format_template: str) -> Union[int, str]:
         return 1
 
 
+def random_timestamp() -> Union[float, int]:
+    """Returns POSIX timestamp as float.
+
+    Returns:
+        Union[float, int] -- POSIX timestamp as float; 1: if NOK
+
+    See:
+        https://docs.python.org/3/library/datetime.html#datetime.datetime.timestamp
+    """
+    try:
+        year = randrange(1970, MAXYEAR + 1)
+        month = randrange(1, 13)
+        day = randrange(1, 31) if month != 2 else randrange(1, 29)
+        hour = randrange(0, 24)
+        minute = randrange(0, 60)
+        second = randrange(0, 60)
+        microsecond = randrange(0, 1000000)
+
+        date_ = dt(
+            year,
+            month,
+            day,
+            hour=hour,
+            minute=minute,
+            second=second,
+            microsecond=microsecond,
+        )
+        return date_.timestamp()
+
+    except Exception as e:
+        print(f"Exception raised in func 'random_timestamp': {str(e)}")
+        return 1
+
+
 def create_data_generator(assigned_args: dict) -> Union[Generator, int]:
     """Returns data generator for given arguments datatype.
 
@@ -192,6 +230,9 @@ def create_data_generator(assigned_args: dict) -> Union[Generator, int]:
 
     if aa["data_type"] == "date":
         return _generator(random_date, date_template=aa["format_template"])
+
+    if aa["data_type"] == "timestamp":
+        return _generator(random_timestamp)
 
     return 1
 

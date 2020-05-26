@@ -85,7 +85,7 @@ def verify(inputs: argparse.Namespace) -> Optional[int]:
         None: OK, 1: NOK, if RuntimeError is raised and caught
     """
     regex = re.compile(
-        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int):-?\d+:\d+$)|(^[a-zA-Z0-9_]+:(float):-?\d+\.\d*:\d+\.\d*$)|(^[A-Za-z0-9_]+:date:[A-Za-z%_\-]*$)"
+        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int):-?\d+:\d+$)|(^[a - zA - Z0 - 9_] + : (float): - ?\d+\.\d*:\d+\.\d*$)|(^[A-Za-z0-9_]+:date:[A-Za-z%_\-]*$)|(^[A-Za-z0-9_]+:timestamp:$)"
     )
 
     try:
@@ -138,6 +138,8 @@ def convert_args(args: argparse.Namespace) -> dict:
             return dict(
                 data_type=chunks[1], column_name=chunks[0], format_template=chunks[2]
             )
+        if chunks[1] in ("timestamp"):
+            return dict(data_type=chunks[1], column_name=chunks[0])
         return 1
 
     output = {}
@@ -159,6 +161,8 @@ def convert_args(args: argparse.Namespace) -> dict:
                 elif chunks[1] == "float":
                     output[key].append(assign(chunks))
                 elif chunks[1] == "date":
+                    output[key].append(assign(chunks))
+                elif chunks[1] == "timestamp":
                     output[key].append(assign(chunks))
 
         elif key == "toml":

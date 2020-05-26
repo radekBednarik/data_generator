@@ -19,6 +19,7 @@ def run_cli_inputs(args: argparse.Namespace) -> Union[tuple, int]:
     """
     if verify(args) is None:
         converted_args = convert_args(args)
+        print(converted_args)
 
         print("--> Parsed CLI inputs converted to dictionary.\r\n")
 
