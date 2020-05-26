@@ -3,7 +3,7 @@
 # Rows must be specified before table or it will be considered
 # as part of it. This is by TOML implementation design.
 
-rows = 100000
+rows = 100
 folder = "output/test02"
 save_as = "json"
 
@@ -29,3 +29,7 @@ save_as = "json"
     data_type = "date"
     column_name = "column4"
     format_template = "%Y%m%d_%H%M%S"
+
+[[specify]]
+    data_type = "timestamp"
+    column_name = "column5"
