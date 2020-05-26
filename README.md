@@ -12,7 +12,7 @@
 
 Random Data Generator.
 
-Create dataset with random data of datatypes int, float, str and date (more precisely python's datetime.datetime).
+Create dataset with random data of datatypes int, float, str, date (more precisely python's datetime.datetime) and timestamp (as float).
 
 Data can be exported to .csv, .xlsx or .json files.
 
@@ -123,6 +123,12 @@ OR:
     - for example, format template can look like this: _%Y%m%d\_%H%M%S_. This will display generated random date in format "yyyymmdd_hhmmss".
 
     - minimum year is 1, maximum year is 9999. See <a href = "https://docs.python.org/3/library/datetime.html#constants">documentation</a>.
+
+- to specify timestamp:
+
+  - `<column_name>:timestamp:`
+
+  - generator will generate datetime.datetime object of random date, with minimum year of 1970 and from it returns corresponding POSIX timestamp as float. For details see <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime.timestamp">documentation</a>
 
 ##### Formatting checks
 
