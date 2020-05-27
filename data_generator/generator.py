@@ -176,11 +176,13 @@ def random_timestamp() -> Union[float, int]:
 
     See:
         https://docs.python.org/3/library/datetime.html#datetime.datetime.timestamp
+        https://docs.python.org/2/library/datetime.html#datetime.datetime.fromtimestamp
     """
     try:
-        year = randrange(1970, MAXYEAR + 1)
+        # range limited because of windows
+        year = randrange(1970, 2038)
         month = randrange(1, 13)
-        day = randrange(1, 31) if month != 2 else randrange(1, 29)
+        day = randrange(2, 31) if month != 2 else randrange(1, 29)
         hour = randrange(0, 24)
         minute = randrange(0, 60)
         second = randrange(0, 60)
@@ -199,6 +201,7 @@ def random_timestamp() -> Union[float, int]:
 
     except Exception as e:
         print(f"Exception raised in func 'random_timestamp': {str(e)}")
+        print(date_)
         return 1
 
 
