@@ -82,21 +82,27 @@ def run_outputs(inputs: Union[Tuple[Any], int]) -> Optional[int]:
 
     if isinstance(inputs, int):
         print(f"Could not generate data and save them. Feeding func returned {inputs}")
+        return 1
+
+    return None
 
 
-def main() -> None:
+def main() -> Union[List[int], List[None]]:
+    results = []
     args = parse_inputs()
 
     print("--> CLI input parsed\r\n")
 
     if hasattr(args, "specify"):
         output = run_cli_inputs(args)
-        run_outputs(output)
+        results.append(run_outputs(output))
 
     if hasattr(args, "toml"):
         outputs = run_toml_inputs(args)
         for output in outputs:
-            run_outputs(output)
+            results.append(run_outputs(output))
+
+    return results
 
 
 if __name__ == "__main__":

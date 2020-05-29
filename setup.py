@@ -7,7 +7,7 @@ setup(
     name="Data Generator",
     version="0.5.3",
     packages=find_packages(),
-    install_requires=["tqdm", "XlsxWriter", "tomlkit"],
+    install_requires=["tqdm", "XlsxWriter", "tomlkit", "pytest"],
     author="bednaJedna",
     author_email="bednarik.radek@gmail.com",
     description="Random Data Generator",
