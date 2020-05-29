@@ -201,7 +201,6 @@ def random_timestamp() -> Union[float, int]:
 
     except Exception as e:
         print(f"Exception raised in func 'random_timestamp': {str(e)}")
-        print(date_)
         return 1
 
 

@@ -1,5 +1,5 @@
 import argparse
-from typing import List, Union
+from typing import Any, List, Optional, Tuple, Union
 
 # pyre-ignore
 from data_generator.cli_parser import convert_args, parse_inputs, verify
@@ -8,7 +8,7 @@ from data_generator.output import to_csv, to_excel, to_json
 from data_generator.toml import get_input
 
 
-def run_cli_inputs(args: argparse.Namespace) -> Union[tuple, int]:
+def run_cli_inputs(args: argparse.Namespace) -> Union[Tuple[Any], int]:
     """Returns data generators and other needed args, when user uses CLI to enter inputs.
 
     Arguments:
@@ -30,7 +30,7 @@ def run_cli_inputs(args: argparse.Namespace) -> Union[tuple, int]:
     return 1
 
 
-def run_toml_inputs(args: argparse.Namespace) -> Union[List[int], List[tuple]]:
+def run_toml_inputs(args: argparse.Namespace) -> Union[List[Tuple[Any]], List[int]]:
     """Retruns data generators and other needed args, when user uses TOML files to provide inputs.
 
     Arguments:
@@ -61,7 +61,7 @@ def run_toml_inputs(args: argparse.Namespace) -> Union[List[int], List[tuple]]:
         return [1]
 
 
-def run_outputs(inputs: Union[tuple, int]) -> None:
+def run_outputs(inputs: Union[Tuple[Any], int]) -> Optional[int]:
     """Generates data via generators and saves them to specified file format.
 
     Arguments:
@@ -69,14 +69,19 @@ def run_outputs(inputs: Union[tuple, int]) -> None:
     """
     print("--> Data generation and saving starting... \n")
 
-    if inputs[1]["save_as"] == "json":
-        to_json(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
-    elif inputs[1]["save_as"] == "xlsx":
-        to_excel(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
-    else:
-        to_csv(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
+    if isinstance(inputs, tuple):
 
-    print(f"""\n--> FINISHED. Find your data at '{inputs[1]["folder"]}' folder.""")
+        if inputs[1]["save_as"] == "json":
+            to_json(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
+        elif inputs[1]["save_as"] == "xlsx":
+            to_excel(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
+        else:
+            to_csv(inputs[0], inputs[1]["rows"], inputs[1]["folder"])
+
+        print(f"""\n--> FINISHED. Find your data at '{inputs[1]["folder"]}' folder.""")
+
+    if isinstance(inputs, int):
+        print(f"Could not generate data and save them. Feeding func returned {inputs}")
 
 
 def main() -> None:
