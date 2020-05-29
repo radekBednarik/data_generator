@@ -1,6 +1,7 @@
 # Data Generator
 
 ![Upload Python Package](https://github.com/bednaJedna/data_generator/workflows/Upload%20Python%20Package/badge.svg)
+![Tests](https://github.com/bednaJedna/data_generator/workflows/Tests/badge.svg)
 
 ## Table of Contents
 
