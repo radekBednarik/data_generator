@@ -85,7 +85,7 @@ def verify(inputs: argparse.Namespace) -> Optional[int]:
         None: OK, 1: NOK, if RuntimeError is raised and caught
     """
     regex = re.compile(
-        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int):-?\d+:\d+$)|(^[a - zA - Z0 - 9_] + : (float): - ?\d+\.\d*:\d+\.\d*$)|(^[A-Za-z0-9_]+:date:[A-Za-z%_\-]*$)|(^[A-Za-z0-9_]+:timestamp:$)"
+        r"(^[a-zA-Z0-9_]+:str:\d+:\d+$)|(^[a-zA-Z0-9_]+:(int):-?\d+:\d+$)|(^[a-zA-Z0-9_]+:(float):-?\d+\.\d*:\d+\.\d*$)|(^[A-Za-z0-9_]+:date:[A-Za-z%_\-]*$)|(^[A-Za-z0-9_]+:timestamp:$)"
     )
 
     try:
