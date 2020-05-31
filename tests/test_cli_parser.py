@@ -2,7 +2,7 @@ import sys
 
 import pytest
 
-from data_generator.cli_parser import parse_inputs
+from data_generator.cli_parser import parse_inputs, verify
 
 
 @pytest.fixture(
@@ -34,13 +34,13 @@ from data_generator.cli_parser import parse_inputs
         ],
     ],
 )
-def provide_valid_cli_input(request):
+def valid_cli_input(request):
     return request.param
 
 
-class TestCLIParser:
-    def test_with_valid_inputs(self, provide_valid_cli_input):
-        sys.argv = provide_valid_cli_input
+class TestFuncParseInputs:
+    def test_with_valid_inputs(self, valid_cli_input):
+        sys.argv = valid_cli_input
         parsed_inputs = parse_inputs()
 
         # data_parser
@@ -66,3 +66,11 @@ class TestCLIParser:
                 save_as="csv",
                 toml=["data_config_example01.toml", "data_config_example02.toml",],
             )
+
+
+class TestFuncVerify:
+    def test_with_correctly_parsed_inputs(self, valid_cli_input):
+        sys.argv = valid_cli_input
+        parsed_inputs = parse_inputs()
+
+        assert verify(parsed_inputs) is None

@@ -89,17 +89,20 @@ def verify(inputs: argparse.Namespace) -> Optional[int]:
     )
 
     try:
-        if inputs.specify is not None:
+        if hasattr(inputs, "specify"):
             for input_ in inputs.specify:
                 if regex.search(input_) is None:
                     raise RuntimeError(
                         f"Provided argument '{input_}' has wrong format.\r\nPlease check documentation and try again."
                     )
+            if inputs.rows <= 0:
+                raise RuntimeError(
+                    f"You can not generate '{str(inputs.rows)}' rows. Minimum number is 1."
+                )
+        elif hasattr(inputs, "toml"):
+            # we do not check this, all config parameters are taken from .toml files
+            pass
 
-        if inputs.rows <= 0:
-            raise RuntimeError(
-                f"You can not generate '{str(inputs.rows)}' rows. Minimum number is 1."
-            )
     except RuntimeError as e:
         print(str(e))
         return 1
