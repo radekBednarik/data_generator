@@ -4,7 +4,9 @@ from subprocess import run
 class TestFunctional:
     def test_input_method_cli(self):
         result = run(
-            "python3 -m data_generator -sa csv -f output/test01 data integers:int:900:1000 float:float:-1000.0:1000.0 strings:str:60:60 date:date:%Y%m%d timestamp:timestamp: 100000",
+            "python3 -m data_generator -sa csv -f output/test01 \
+             data integers:int:900:1000 float:float:-1000.0:1000.0 strings:str:60:60 date:date:%Y%m%d timestamp:timestamp: \
+             100000",
             capture_output=True,
             check=True,
             shell=True,
