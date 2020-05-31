@@ -2,7 +2,7 @@ import sys
 
 import pytest
 
-from data_generator.cli_parser import parse_inputs, verify
+from data_generator.cli_parser import convert_args, parse_inputs, verify
 
 
 @pytest.fixture(
@@ -74,3 +74,57 @@ class TestFuncVerify:
         parsed_inputs = parse_inputs()
 
         assert verify(parsed_inputs) is None
+
+
+class TestFuncConvertArgs:
+    def test_with_correctly_parsed_inputs(self, valid_cli_input):
+        sys.argv = valid_cli_input
+        parsed_inputs = parse_inputs()
+        converted_args = convert_args(parsed_inputs)
+
+        if hasattr(parsed_inputs, "specify"):
+            assert converted_args == dict(
+                folder="output/test",
+                save_as="xlsx",
+                specify=[
+                    dict(
+                        data_type="str",
+                        column_name="column1",
+                        lower_bound=0,
+                        upper_bound=50,
+                    ),
+                    dict(
+                        data_type="str",
+                        column_name="column2",
+                        lower_bound=101,
+                        upper_bound=101,
+                    ),
+                    dict(
+                        data_type="int",
+                        column_name="column3",
+                        lower_bound=10,
+                        upper_bound=10,
+                    ),
+                    dict(
+                        data_type="int",
+                        column_name="column4",
+                        lower_bound=0,
+                        upper_bound=1000,
+                    ),
+                    dict(
+                        data_type="float",
+                        column_name="column5",
+                        lower_bound=0.0,
+                        upper_bound=1000.0,
+                    ),
+                ],
+                rows=1000,
+            )
+
+        if hasattr(parsed_inputs, "toml"):
+            assert converted_args == dict(
+                # defaults in CLI parser!!!
+                folder="output",
+                save_as="csv",
+                toml=["data_config_example01.toml", "data_config_example02.toml"],
+            )
