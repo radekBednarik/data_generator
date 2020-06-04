@@ -8,6 +8,7 @@
 - [About](#about)
 - [Getting Started](#getting_started)
 - [Usage](#usage)
+- [Changelog](changelog.md)
 
 ## About <a name = "about"></a>
 
