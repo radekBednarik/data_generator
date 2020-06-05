@@ -32,11 +32,11 @@ def parse_inputs() -> argparse.Namespace:
         action="extend",
         nargs="+",
         type=str,
-        help="Specify columns, their datatype and max size.\nExamples: \
-            String: column1:str:0:50\n \
-            Float:  column2:float:-100:100\n \
-            Int: column3:int:-100:100\n \
-            Date: column4:date:%Y%m%d_%H%M%S",
+        help="Specify columns, their datatype and max size. Examples: \
+            String: column1:str:0:50 \
+            Float:  column2:float:-100:100 \
+            Int: column3:int:-100:100 \
+            Date: column4:date:%%Y%%m%%d_%%H%%M%%S",
     )
     data_parser.add_argument(
         "rows",
@@ -67,7 +67,7 @@ def parse_inputs() -> argparse.Namespace:
         action="store",
         type=str,
         default="csv",
-        help="Specify file format of the output. Options are 'csv', 'json'. If not provided, defaults to 'csv'.",
+        help="Specify file format of the output. Options are 'csv', 'xlsx', 'json'. If not provided, defaults to 'csv'.",
     )
     return main_parser.parse_args()
 
