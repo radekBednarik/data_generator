@@ -78,7 +78,9 @@ OR:
 
 - use optional parameter _-sa_ or _--save_as_
 
-- this parameter belongs to main parser and has to be used before _data_ or _toml_ subparsers and their arguments
+- this parameter belongs to main parser and has to be used before _data_ subparser arguments
+
+- do not use this parameter together with toml subparser - all parameters are provided via .toml configuration file
 
 - if this parameter is not specified, default output file format is .csv
 
@@ -96,7 +98,9 @@ OR:
 
 - use optional parameter _-f_ or _--folder_
 
-- this parameter belongs to main parser and has to be used before _data_ or _toml_ subparsers and their arguments
+- this parameter belongs to main parser and has to be used before _data_ subparser arguments
+
+- do not use this parameter together with toml subparser - all parameters are provided via .toml configuration file
 
 - example: `python[3] -m data_generator -f my_output_folder ...`
 
